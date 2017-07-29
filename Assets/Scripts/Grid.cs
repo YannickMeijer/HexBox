@@ -81,12 +81,12 @@ public class Grid
 			// Bottom.
 			if (y < Height - 1)
 			{
-				if (leftX >= 0 && (neighbor = rows[y - 1][leftX]) != null)
+				if (leftX >= 0 && (neighbor = rows[y + 1][leftX]) != null)
 				{
 					value[HexagonDirection.BOTTOM_LEFT] = neighbor;
 					neighbor[HexagonDirection.TOP_RIGHT] = value;
 				}
-				if (rightX < Width && (neighbor = rows[y][rightX]) != null)
+				if (rightX < Width && (neighbor = rows[y + 1][rightX]) != null)
 				{
 					value[HexagonDirection.BOTTOM_RIGHT] = neighbor;
 					neighbor[HexagonDirection.TOP_LEFT] = value;
