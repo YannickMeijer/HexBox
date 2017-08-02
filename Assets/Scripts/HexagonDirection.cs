@@ -5,10 +5,10 @@ using System.Text;
 
 public enum HexagonDirection
 {
-	TOP_LEFT,
-	TOP_RIGHT,
-	LEFT,
-	RIGHT,
-	BOTTOM_LEFT,
-	BOTTOM_RIGHT
+	TOP,
+	RIGHT_TOP,
+	RIGHT_BOTTOM,
+	BOTTOM,
+	LEFT_BOTTOM,
+	LEFT_TOP
 }
