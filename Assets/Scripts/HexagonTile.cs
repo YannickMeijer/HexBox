@@ -13,23 +13,21 @@ public class HexagonTile : MonoBehaviour
 
 	private void Start()
 	{
+		// Get the unit length and offsets.
 		float unitLength = Radius / (Mathf.Sqrt(3) / 2);
 		offsetX = unitLength * Mathf.Sqrt(3);
 		offsetZ = unitLength * 1.5f;
 
-		SetTilePosition();
+		UpdatePosition();
 	}
 
-	private void SetTilePosition()
+	private void UpdatePosition()
 	{
-		float newZ = TileZ * offsetZ;
-
-		float newX;
-		if (TileZ % 2 == 0)
-			newX = TileX * offsetX;
-		else
-			newX = (TileX + 0.5f) * offsetX;
-
-		gameObject.transform.localPosition = new Vector3(newX, 0, newZ);
+		// Set the new x and z, keeping the y.
+		gameObject.transform.localPosition = new Vector3(
+			(TileZ % 2 == 0 ? TileX : TileX + 0.5f) * offsetX, // x is dependent on the column, odd columns are shifted half a unit up.
+			gameObject.transform.localPosition.y,
+			TileZ * offsetZ
+			);
 	}
 }
