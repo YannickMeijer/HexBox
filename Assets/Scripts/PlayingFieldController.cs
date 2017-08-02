@@ -22,12 +22,14 @@ public class PlayingFieldController : MonoBehaviour
 
 	private void GenerateTiles()
 	{
-		for (int x = 0; x < 10; x++)
-			for (int y = 0; y < 10; y++)
+		for (int x = -5; x < 5; x++)
+			for (int y = -5; y < 5; y++)
 			{
 				GameObject newTile = Instantiate(tilePrefab, tiles.transform);
 				newTile.name = x.ToString() + ',' + y;
-				newTile.GetComponent<HexagonTile>().SetTilePosition(x, y);
+				HexagonTile tile = newTile.GetComponent<HexagonTile>();
+				tile.TileX = x;
+				tile.TileZ = y;
 			}
 	}
 }
