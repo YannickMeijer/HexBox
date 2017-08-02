@@ -52,11 +52,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Card.cs" />
-     <Compile Include="Assets\Scripts\Grid.cs" />
      <Compile Include="Assets\Scripts\Hand.cs" />
      <Compile Include="Assets\Scripts\HexagonDirection.cs" />
      <Compile Include="Assets\Scripts\HexagonTile.cs" />
-     <Compile Include="Assets\Scripts\PlayingField.cs" />
+     <Compile Include="Assets\Scripts\PlayingFieldController.cs" />
      <Compile Include="Assets\Scripts\TurnTimer.cs" />
      <Compile Include="Assets\Scripts\UnitCard.cs" />
  <Reference Include="UnityEngine.UI">

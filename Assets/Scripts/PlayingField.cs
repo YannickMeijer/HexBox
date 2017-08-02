@@ -1,8 +1,0 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PlayingField : MonoBehaviour
-{
-	private Grid grid;
-}

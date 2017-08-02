@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class HexagonTile : MonoBehaviour
 {
-	private Dictionary<HexagonDirection, HexagonTile> neighbors = new Dictionary<HexagonDirection, HexagonTile>();
-
-	public HexagonTile this[HexagonDirection direction]
+	private void Start()
 	{
-		get { return neighbors[direction]; }
-		set { neighbors[direction] = value; }
+	}
+
+	public void SetTilePosition(int tileX, int tileY)
+	{
+		transform.localPosition = new Vector3(tileX, 0, tileY);
 	}
 }
