@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +13,7 @@ public class Grid
 	 * 2 | 0 1 2
 	 * 3 |  0 1 2
 	 * ...
-	 *
+	 */
 	private List<List<HexagonTile>> rows = new List<List<HexagonTile>>();
 
 	public Grid(int width, int height)
@@ -33,7 +33,7 @@ public class Grid
 
 	public HexagonTile this[int x, int y]
 	{
-		get => rows[y][x];
+		get { return rows[y][x]; }
 		set
 		{
 			// Save the old value, set the new one.
@@ -95,8 +95,13 @@ public class Grid
 		}
 	}
 
-	public int Width => rows[0].Count;
+	public int Width
+	{
+		get { return rows[0].Count; }
+	}
 
-	public int Height => rows.Count;
+	public int Height
+	{
+		get { return rows.Count; }
+	}
 }
-*/
