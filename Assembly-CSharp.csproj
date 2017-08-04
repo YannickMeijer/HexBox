@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\HexagonDirection.cs" />
      <Compile Include="Assets\Scripts\HexagonTile.cs" />
      <Compile Include="Assets\Scripts\PlayingFieldController.cs" />
+     <Compile Include="Assets\Scripts\Point.cs" />
      <Compile Include="Assets\Scripts\TurnTimer.cs" />
      <Compile Include="Assets\Scripts\UnitCard.cs" />
  <Reference Include="UnityEngine.UI">
