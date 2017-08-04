@@ -13,10 +13,10 @@ public class HexagonTile : MonoBehaviour
 
 	private void Start()
 	{
-		// Get the unit length and offsets.
-		float unitLength = Radius / (Mathf.Sqrt(3) / 2);
-		offsetX = unitLength * Mathf.Sqrt(3);
-		offsetZ = unitLength * 1.5f;
+		// http://answers.unity3d.com/questions/421509/2d-hexagonal-grid-beginner.html
+		// Get the offsets.
+		offsetX = Radius * Mathf.Sqrt(3);
+		offsetZ = Radius * 1.5f;
 
 		UpdatePosition();
 	}
