@@ -9,7 +9,7 @@ public class PlayingFieldController : MonoBehaviour
 	private GameObject tilesContainer;
 
 	// Columns, then rows.
-	private readonly Dictionary<int, Dictionary<int, GameObject>> columns = new Dictionary<int, Dictionary<int, GameObject>>();
+	private readonly Dictionary<Point, GameObject> tiles = new Dictionary<Point, GameObject>();
 
 	public void Start()
 	{
@@ -32,11 +32,7 @@ public class PlayingFieldController : MonoBehaviour
 		tile.TileX = p.X;
 		tile.TileZ = p.Y;
 
-		// Save the tile.
-		if (!columns.ContainsKey(p.X))
-			columns[p.X] = new Dictionary<int, GameObject>();
-		columns[p.X][p.Y] = newTile;
-
+		tiles[p] = newTile;
 		return newTile;
 	}
 
@@ -78,17 +74,17 @@ public class PlayingFieldController : MonoBehaviour
 	{
 		get
 		{
-			Dictionary<int, GameObject> column;
-			GameObject value = null;
-			// Try to get the row, if it exists try to get the tile.
-			if (columns.TryGetValue(x, out column))
-				column.TryGetValue(z, out value);
-			return value;
+			return this[new Point(x, z)];
 		}
 	}
 
 	public GameObject this[Point p]
 	{
-		get { return this[p.X, p.Y]; }
+		get
+		{
+			GameObject value = null;
+			tiles.TryGetValue(p, out value);
+			return value;
+		}
 	}
 }
