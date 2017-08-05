@@ -19,6 +19,16 @@ public class Unit : MonoBehaviour
 		Destroy(gameObject);
 	}
 
+	public void Damage(int damage, DamageType type)
+	{
+		// Normal damage is reduced by defense.
+		if (type == DamageType.NORMAL)
+			damage -= Defense;
+
+		if (damage > 0)
+			Health -= (damage - Defense);
+	}
+
 	public int Health
 	{
 		get { return health; }
