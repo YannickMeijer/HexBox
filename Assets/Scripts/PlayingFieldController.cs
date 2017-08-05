@@ -40,7 +40,7 @@ public class PlayingFieldController : MonoBehaviour
 		return newTile;
 	}
 
-	public GameObject GetNeighbor(Point p, HexagonDirection direction)
+	public Point GetNeighbor(Point p, HexagonDirection direction)
 	{
 		int dX = 0;
 		int dZ = 0;
@@ -71,7 +71,7 @@ public class PlayingFieldController : MonoBehaviour
 				break;
 		}
 
-		return this[p.X + dX, p.Y + dZ];
+		return new Point(p.X + dX, p.Y + dZ);
 	}
 
 	public GameObject this[int x, int z]
