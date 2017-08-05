@@ -66,8 +66,7 @@ public class Hand : MonoBehaviour {
 
     void DrawCard()
     {
-        Card temp = deck.Draw;
-
+        Card temp = deck.Draw();
     }
 
     void calcFrustum()

@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Card.cs" />
+     <Compile Include="Assets\Scripts\Deck.cs" />
      <Compile Include="Assets\Scripts\Hand.cs" />
      <Compile Include="Assets\Scripts\HexagonDirection.cs" />
      <Compile Include="Assets\Scripts\HexagonTile.cs" />
