@@ -59,6 +59,7 @@
      <Compile Include="Assets\Scripts\Point.cs" />
      <Compile Include="Assets\Scripts\TurnTimer.cs" />
      <Compile Include="Assets\Scripts\UnitCard.cs" />
+     <Compile Include="Assets\Scripts\Units\Unit.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
