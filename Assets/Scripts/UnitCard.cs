@@ -6,17 +6,14 @@ public class UnitCard : Card
 {
     public int health, defense, attack, sight, contactDamage;
 
-    void Start()
+    protected override void Start()
     {
-        location = Location.HAND;
+        base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        if (location == Location.HAND)
-        {
-        }
-
+        base.Update();
     }
 }

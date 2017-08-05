@@ -11,15 +11,22 @@ public class HexagonTile : MonoBehaviour
 	private float offsetX;
 	private float offsetZ;
 
+    private GameObject playerHand;
+    private Hand hand;
+
+
 	private void Start()
 	{
 		// http://answers.unity3d.com/questions/421509/2d-hexagonal-grid-beginner.html
 		// Get the offsets.
 		offsetX = Radius * 1.5f;
 		offsetZ = Radius * Mathf.Sqrt(3);
+        
+        UpdatePosition();
 
-		UpdatePosition();
-	}
+        playerHand = GameObject.FindGameObjectWithTag("Hand");
+        hand = playerHand.GetComponent<Hand>();
+    }
 
 	private void UpdatePosition()
 	{
@@ -30,4 +37,9 @@ public class HexagonTile : MonoBehaviour
 			(TileX % 2 == 0 ? TileZ : TileZ + 0.5f) * offsetZ // Z is dependent on the column, odd columns are shifted half a unit up.
 		);
 	}
+
+    public void OnMouseUpAsButton()
+    {
+        hand.PlayOnHexagon(this);        
+    }
 }
