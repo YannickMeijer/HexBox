@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23831749640417274}
   - component: {fileID: 95017946867374786}
   - component: {fileID: 114389033615424126}
+  - component: {fileID: 64327212917343054}
   m_Layer: 0
   m_Name: HexagonTilePrefab
   m_TagString: Untagged
@@ -81,6 +82,20 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1349213262592420}
+  m_Mesh: {fileID: 4300002, guid: f6a489f03ae09e64386a675b6762b051, type: 3}
+--- !u!64 &64327212917343054
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1349213262592420}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300002, guid: f6a489f03ae09e64386a675b6762b051, type: 3}
 --- !u!95 &95017946867374786
 Animator:

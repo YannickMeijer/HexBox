@@ -30,4 +30,9 @@ public class HexagonTile : MonoBehaviour
 			(TileX % 2 == 0 ? TileZ : TileZ + 0.5f) * offsetZ // Z is dependent on the column, odd columns are shifted half a unit up.
 		);
 	}
+
+	private void OnMouseDown()
+	{
+		Debug.Log("Clicked tile: " + gameObject.name);
+	}
 }
