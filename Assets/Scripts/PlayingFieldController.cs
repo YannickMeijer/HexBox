@@ -17,8 +17,8 @@ public class PlayingFieldController : MonoBehaviour
 
 		// Generate some tiles.
 		for (int x = -5; x < 5; x++)
-			for (int y = -5; y < 5; y++)
-				CreateTile(new Point(x, y));
+			for (int z = -5; z < 5; z++)
+				CreateTile(new Point(x, z));
 	}
 
 	public GameObject CreateTile(Point p)
@@ -40,16 +40,55 @@ public class PlayingFieldController : MonoBehaviour
 		return newTile;
 	}
 
-	public GameObject this[Point p]
+	public GameObject GetNeighbor(Point p, HexagonDirection direction)
+	{
+		int dX = 0;
+		int dZ = 0;
+
+		switch (direction)
+		{
+			case HexagonDirection.TOP:
+				dZ = 1;
+				break;
+			case HexagonDirection.BOTTOM:
+				dZ = -1;
+				break;
+			case HexagonDirection.LEFT_TOP:
+				dX = -1;
+				dZ = p.X % 2 == 0 ? 0 : 1;
+				break;
+			case HexagonDirection.LEFT_BOTTOM:
+				dX = -1;
+				dZ = p.X % 2 == 0 ? -1 : 0;
+				break;
+			case HexagonDirection.RIGHT_TOP:
+				dX = 1;
+				dZ = p.X % 2 == 0 ? 0 : 1;
+				break;
+			case HexagonDirection.RIGHT_BOTTOM:
+				dX = 1;
+				dZ = p.X % 2 == 0 ? -1 : 0;
+				break;
+		}
+
+		return this[p.X + dX, p.Y + dZ];
+	}
+
+	public GameObject this[int x, int z]
 	{
 		get
 		{
 			Dictionary<int, GameObject> column;
 			GameObject value = null;
 			// Try to get the row, if it exists try to get the tile.
-			if (columns.TryGetValue(p.X, out column))
-				column.TryGetValue(p.Y, out value);
+			if (columns.TryGetValue(x, out column))
+				column.TryGetValue(z, out value);
 			return value;
 		}
+	}
+
+	public GameObject this[Point p]
+	{
+		get { return this[p.X, p.Y]; }
 	}
 }

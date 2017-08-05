@@ -15,8 +15,8 @@ public class HexagonTile : MonoBehaviour
 	{
 		// http://answers.unity3d.com/questions/421509/2d-hexagonal-grid-beginner.html
 		// Get the offsets.
-		offsetX = Radius * Mathf.Sqrt(3);
-		offsetZ = Radius * 1.5f;
+		offsetX = Radius * 1.5f;
+		offsetZ = Radius * Mathf.Sqrt(3);
 
 		UpdatePosition();
 	}
@@ -25,9 +25,9 @@ public class HexagonTile : MonoBehaviour
 	{
 		// Set the new x and z, keeping the y.
 		gameObject.transform.localPosition = new Vector3(
-			(TileZ % 2 == 0 ? TileX : TileX + 0.5f) * offsetX, // x is dependent on the column, odd columns are shifted half a unit up.
+			TileX * offsetX,
 			gameObject.transform.localPosition.y,
-			TileZ * offsetZ
-			);
+			(TileX % 2 == 0 ? TileZ : TileZ + 0.5f) * offsetZ // Z is dependent on the column, odd columns are shifted half a unit up.
+		);
 	}
 }
