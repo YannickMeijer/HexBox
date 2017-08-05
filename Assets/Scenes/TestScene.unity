@@ -153,8 +153,12 @@ MonoBehaviour:
   - {fileID: 1384707550}
   - {fileID: 876314090}
   cameraDistance: 10
+  startingHand: 0
   clickedCard: 0
   cardCount: 0
+  frustumHeight: 0
+  frustumWidth: 0
+  deck: {fileID: 0}
 --- !u!1 &282760670
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +336,9 @@ MonoBehaviour:
   playerHand: {fileID: 0}
   location: 0
   moveTime: 0
+  playSpeed: 0
+  rotateSpeed: 0
+  angle: 0
   health: 0
   defense: 0
   attack: 0
@@ -407,6 +414,9 @@ MonoBehaviour:
   playerHand: {fileID: 0}
   location: 0
   moveTime: 0
+  playSpeed: 0
+  rotateSpeed: 0
+  angle: 0
   health: 0
   defense: 0
   attack: 0
@@ -496,6 +506,9 @@ MonoBehaviour:
   playerHand: {fileID: 0}
   location: 0
   moveTime: 0
+  playSpeed: 0
+  rotateSpeed: 0
+  angle: 0
   health: 0
   defense: 0
   attack: 0
