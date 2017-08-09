@@ -20,11 +20,9 @@ public class HexagonTile : MonoBehaviour
 		// http://answers.unity3d.com/questions/421509/2d-hexagonal-grid-beginner.html
 		// Get the offsets.
 		offsetX = Radius * 1.5f;
-        offsetZ = Radius * Mathf.Sqrt(3);
-		UpdatePosition();        
+		offsetZ = Radius * Mathf.Sqrt(3);
 
-		playerHand = GameObject.FindGameObjectWithTag("Hand");
-		hand = playerHand.GetComponent<Hand>();
+		UpdatePosition();
 	}
 
 	private void UpdatePosition()
@@ -41,6 +39,7 @@ public class HexagonTile : MonoBehaviour
     {
         GlobalMouseHandler.wasClicked(this);
     }
+
 	public int TileX
 	{
 		get { return tileX; }
