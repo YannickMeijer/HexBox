@@ -22,6 +22,9 @@ public class HexagonTile : MonoBehaviour
 		offsetX = Radius * 1.5f;
         offsetZ = Radius * Mathf.Sqrt(3);
 		UpdatePosition();        
+
+		playerHand = GameObject.FindGameObjectWithTag("Hand");
+		hand = playerHand.GetComponent<Hand>();
 	}
 
 	private void UpdatePosition()
