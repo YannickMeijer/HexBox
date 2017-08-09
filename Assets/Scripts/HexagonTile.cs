@@ -5,26 +5,11 @@ using UnityEngine;
 public class HexagonTile : MonoBehaviour
 {
 	public float Radius = 0.5f;
-<<<<<<< HEAD
-	public int TileX, TileZ;
 
 	[SerializeField]
 	private int tileX;
 	[SerializeField]
 	private int tileZ;
-=======
-
-	[SerializeField]
-	private int tileX;
-	[SerializeField]
-	private int tileZ;
-
-	private float offsetX;
-	private float offsetZ;
-
-	private GameObject playerHand;
-	private Hand hand;
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
 
 	private float offsetX, offsetZ;
     
@@ -35,16 +20,8 @@ public class HexagonTile : MonoBehaviour
 		// http://answers.unity3d.com/questions/421509/2d-hexagonal-grid-beginner.html
 		// Get the offsets.
 		offsetX = Radius * 1.5f;
-		offsetZ = Radius * Mathf.Sqrt(3);
-<<<<<<< HEAD
-        UpdatePosition();
-=======
-
-		UpdatePosition();
-
-		playerHand = GameObject.FindGameObjectWithTag("Hand");
-		hand = playerHand.GetComponent<Hand>();
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
+        offsetZ = Radius * Mathf.Sqrt(3);
+		UpdatePosition();        
 	}
 
 	private void UpdatePosition()
@@ -57,18 +34,10 @@ public class HexagonTile : MonoBehaviour
 		);
 	}
 
-<<<<<<< HEAD
     public void OnMouseUpAsButton()
     {
         GlobalMouseHandler.wasClicked(this);
     }
-=======
-	public void OnMouseUpAsButton()
-	{
-		hand.PlayOnHexagon(this);
-	}
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
-
 	public int TileX
 	{
 		get { return tileX; }
@@ -88,8 +57,4 @@ public class HexagonTile : MonoBehaviour
 			UpdatePosition();
 		}
 	}
-<<<<<<< HEAD
-
-=======
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
 }

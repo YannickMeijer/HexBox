@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Card : MonoBehaviour
-<<<<<<< HEAD
 { 
-=======
-{
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
+
 	public int deckCost, manaCost, deckLimit, handPosition;
 	public string flavourText, description, cardName;
 	public List<string> preRequiredCards;
@@ -29,22 +26,15 @@ public class Card : MonoBehaviour
 
 	public float moveTime;
 	public float playSpeed, rotateSpeed, angle;
-<<<<<<< HEAD
     public TurnTimer timer;
-=======
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
 
 	protected virtual void Start()
 	{
 		moveTime = 1;
-<<<<<<< HEAD
         GameObject turnTimer = GameObject.FindGameObjectWithTag("TurnTimer");
         timer = turnTimer.GetComponent<TurnTimer>();
     }
-=======
-	}
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
-
+    
 	protected virtual void Update()
 	{
 		if (location == Location.PLAY)
@@ -60,9 +50,6 @@ public class Card : MonoBehaviour
 			difference = 0;
 
 	}
-
-<<<<<<< HEAD
-
     protected virtual void OnMouseUpAsButton()
     {
         if(location == Location.HAND && !clicked)
@@ -103,43 +90,5 @@ public class Card : MonoBehaviour
 	public void UpdatePosition(Vector3 newLoc, float frustum, int cameraDistance)
 	{
 		transform.localPosition = newLoc + new Vector3(0, difference * -1, difference);
-=======
-	public void UpdatePosition(Vector3 newLoc, float frustum, int cameraDistance)
-	{
-		transform.localPosition = newLoc + new Vector3(0, difference * -1, difference);
-	}
-
-	void OnMouseUpAsButton()
-	{
-
-		if (location == Location.HAND)
-		{
-			Debug.Log("Success");
-			clicked = true;
-			playerHand.UpdatePlayCard(handPosition);
-		}
-	}
-
-	public void Play(HexagonTile targetHex)
-	{
-		currentHex = targetHex;
-		currentPos = transform.position;
-		calcDistance();
-		calcAngle();
-		location = Location.PLAY;
-	}
-
-	public void calcDistance()
-	{
-		float tempDis = Vector3.Distance(currentPos, currentHex.transform.position);
-		playSpeed = tempDis / moveTime;
-	}
-
-	public void calcAngle()
-	{
-		angle = Quaternion.Angle(transform.rotation, currentHex.transform.rotation);
-		rotateSpeed = angle / moveTime;
-
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
 	}
 }

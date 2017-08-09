@@ -33,11 +33,6 @@ public class Tooltip : MonoBehaviour
 	{
 		if (!mouseOver)
 			return;
-
-<<<<<<< HEAD
-		//Debug.Log("Gui");
-=======
->>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
 		Vector2 mouse = Event.current.mousePosition;
 		GUI.Label(new Rect(mouse.x + 20, mouse.y + 10, 300, 100), text, style);
 	}
