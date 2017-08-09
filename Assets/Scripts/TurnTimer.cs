@@ -6,12 +6,12 @@ using System.Linq;
 public class TurnTimer : MonoBehaviour
 {
 
-    public bool gradualMovement = true, gracefulStart = true;
+    public bool gradualMovement = true, gracefulStart = true, unitProgress = false;
     //If gradualMovement is true, everytime turnDuration runs out the units will move their movespeed. If gracefulStart is true, the game will not start normal turn progression until all are ready or the timer runs out. 
     public int turnDuration, gracefulDuration;
     //gracefulDuration determines how long the gracefulStart lasts.
     public List<bool> playersReady;
-    bool gracefulActive = true, unitProgress = false;
+    bool gracefulActive = true;
     //unitProgress is accessed by units to see if they should move at this point. Units should check if they haven't moved in the last frame.
     int orderDuration;
     //orderDuration is used to ensure that all units can see if unitProgress has been changed.

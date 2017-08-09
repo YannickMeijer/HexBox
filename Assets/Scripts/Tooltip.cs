@@ -5,19 +5,27 @@ using UnityEngine;
 
 public class Tooltip : MonoBehaviour
 {
-	public GUIStyle Style;
-	public string Name;
-	public string Description;
+	public GUIStyle style;
+
+	[SerializeField]
+	private string tooltipName;
+	[SerializeField]
+	private string description;
 
 	private bool mouseOver;
 	private string text;
 
 	private void Start()
 	{
+		UpdateText();
+	}
+
+	private void UpdateText()
+	{
 		// Build the tooltip text.
 		text = new StringBuilder()
-			.Append("<b>").Append(Name).AppendLine("</b>")
-			.Append(Description)
+			.Append("<b>").Append(tooltipName).AppendLine("</b>")
+			.Append(description)
 			.ToString();
 	}
 
@@ -26,9 +34,12 @@ public class Tooltip : MonoBehaviour
 		if (!mouseOver)
 			return;
 
-		Debug.Log("Gui");
+<<<<<<< HEAD
+		//Debug.Log("Gui");
+=======
+>>>>>>> d8e84a4d36b5104ceefbe568cdfbcc5113b006ab
 		Vector2 mouse = Event.current.mousePosition;
-		GUI.Label(new Rect(mouse.x + 20, mouse.y + 10, 300, 100), text, Style);
+		GUI.Label(new Rect(mouse.x + 20, mouse.y + 10, 300, 100), text, style);
 	}
 
 	private void OnMouseEnter()
@@ -39,5 +50,25 @@ public class Tooltip : MonoBehaviour
 	private void OnMouseExit()
 	{
 		mouseOver = false;
+	}
+
+	public string TooltipName
+	{
+		get { return tooltipName; }
+		set
+		{
+			tooltipName = value;
+			UpdateText();
+		}
+	}
+
+	public string Description
+	{
+		get { return description; }
+		set
+		{
+			description = value;
+			UpdateText();
+		}
 	}
 }

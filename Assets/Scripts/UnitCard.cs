@@ -4,16 +4,65 @@ using UnityEngine;
 
 public class UnitCard : Card
 {
-    public int health, defense, attack, sight, contactDamage;
+    public int health, defense, attack, sight, contactDamage, moveSpeed;
+    public List<HexagonTile> movement;
+    bool acted, performActions;
+    int moved;
+
 
     protected override void Start()
     {
         base.Start();
+        acted = false;
+        moved = 0;
+        moveSpeed = 2;
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+        //TODO:  on turntimer htting zero, move equal to movespeed down movement list
+        if (timer.unitProgress && !acted)
+        {
+            performActions = true;
+            acted = true;
+        }
+        else
+            acted = false;
+        ExecuteActions();
+    }
+
+    void ExecuteActions()
+    {
+        if (location == Location.PLAY)
+        {
+            if (movement.Count != 0 && transform.position == currentHex.transform.position && performActions)
+            {
+                currentHex = movement[0];
+                movement.RemoveAt(0);
+                moved += 1;
+                if (moved == moveSpeed)
+                {
+                    moved = 0;
+                    performActions = false;
+                }
+            }
+        }
+    }
+
+    protected override void OnMouseUpAsButton()
+    {
+        base.OnMouseUpAsButton();
+        if(location == Location.PLAY)
+        {
+            GlobalMouseHandler.lastSelected = this;
+        }
+    }
+
+    public void Pathfinding(HexagonTile targetHex)
+    {
+        //placeholder
+        //movement.Clear();
+        movement.Add(targetHex);
     }
 }

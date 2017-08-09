@@ -108,6 +108,52 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &102827267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 102827269}
+  - component: {fileID: 102827268}
+  m_Layer: 0
+  m_Name: TurnTimer
+  m_TagString: TurnTimer
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &102827268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 102827267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1509dc584a94d449835d4156caab06b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gradualMovement: 1
+  gracefulStart: 1
+  unitProgress: 0
+  turnDuration: 5
+  gracefulDuration: 0
+  playersReady: 
+--- !u!4 &102827269
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 102827267}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.636078, y: -24.96576, z: 19.826761}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &134031257
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,17 +194,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83dfe61c33ee69542937de65c985a06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsInHand:
-  - {fileID: 1887387639}
-  - {fileID: 1384707550}
-  - {fileID: 876314090}
-  cameraDistance: 10
+  cardsInHand: []
+  cameraDistance: 5
   startingHand: 0
-  clickedCard: 0
-  cardCount: 0
+  handLimit: 0
   frustumHeight: 0
   frustumWidth: 0
-  deck: {fileID: 0}
+  deck: {fileID: 1688285484}
 --- !u!1 &282760670
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +300,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400004, guid: f6a489f03ae09e64386a675b6762b051, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 1.271
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: f6a489f03ae09e64386a675b6762b051, type: 3}
       propertyPath: m_LocalPosition.y
@@ -331,19 +373,19 @@ MonoBehaviour:
   description: 
   cardName: 
   preRequiredCards: []
-  clicked: 0
   currentHex: {fileID: 0}
-  playerHand: {fileID: 0}
+  timer: {fileID: 0}
   location: 0
-  moveTime: 0
   playSpeed: 0
   rotateSpeed: 0
-  angle: 0
+  moveTime: 0
   health: 0
   defense: 0
   attack: 0
   sight: 0
   contactDamage: 0
+  moveSpeed: 0
+  movement: []
 --- !u!64 &876314091
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -409,19 +451,19 @@ MonoBehaviour:
   description: 
   cardName: 
   preRequiredCards: []
-  clicked: 0
   currentHex: {fileID: 0}
-  playerHand: {fileID: 0}
+  timer: {fileID: 0}
   location: 0
-  moveTime: 0
   playSpeed: 0
   rotateSpeed: 0
-  angle: 0
+  moveTime: 0
   health: 0
   defense: 0
   attack: 0
   sight: 0
   contactDamage: 0
+  moveSpeed: 0
+  movement: []
 --- !u!64 &1384707551
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -436,6 +478,51 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300002, guid: f6a489f03ae09e64386a675b6762b051, type: 3}
+--- !u!1 &1688285483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1688285485}
+  - component: {fileID: 1688285484}
+  m_Layer: 0
+  m_Name: Deck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1688285484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1688285483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cb2f9b0c4e3cf744a025bb1e666a282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deckList:
+  - {fileID: 1887387639}
+  - {fileID: 1384707550}
+  - {fileID: 876314090}
+  drawn: 0
+--- !u!4 &1688285485
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1688285483}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.214, y: 0, z: 0}
+  m_LocalScale: {x: 0.48, y: 0.48, z: 0.3}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1753451589
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,19 +588,19 @@ MonoBehaviour:
   description: 
   cardName: 
   preRequiredCards: []
-  clicked: 0
   currentHex: {fileID: 0}
-  playerHand: {fileID: 0}
+  timer: {fileID: 0}
   location: 0
-  moveTime: 0
   playSpeed: 0
   rotateSpeed: 0
-  angle: 0
+  moveTime: 0
   health: 0
   defense: 0
   attack: 0
   sight: 0
   contactDamage: 0
+  moveSpeed: 0
+  movement: []
 --- !u!64 &1887387640
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -537,7 +624,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400004, guid: f6a489f03ae09e64386a675b6762b051, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: -1.592
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: f6a489f03ae09e64386a675b6762b051, type: 3}
       propertyPath: m_LocalPosition.y

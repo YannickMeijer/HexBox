@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c0ae568fc507048ba71828f820791d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Style:
+  style:
     m_Name: 
     m_Normal:
       m_Background: {fileID: 0}
@@ -205,7 +205,7 @@ MonoBehaviour:
     m_ContentOffset: {x: 0, y: 0}
     m_FixedWidth: 0
     m_FixedHeight: 0
-    m_StretchWidth: 0
-    m_StretchHeight: 1
-  Name: Normal tile
-  Description: A generic tile.
+    m_StretchWidth: 1
+    m_StretchHeight: 0
+  tooltipName: Normal tile
+  description: A normal hexagon tile.
