@@ -373,12 +373,15 @@ MonoBehaviour:
   description: 
   cardName: 
   preRequiredCards: []
+  clicked: 0
   currentHex: {fileID: 0}
-  timer: {fileID: 0}
+  playerHand: {fileID: 0}
   location: 0
+  moveTime: 0
   playSpeed: 0
   rotateSpeed: 0
-  moveTime: 0
+  angle: 0
+  timer: {fileID: 0}
   health: 0
   defense: 0
   attack: 0
@@ -451,12 +454,15 @@ MonoBehaviour:
   description: 
   cardName: 
   preRequiredCards: []
+  clicked: 0
   currentHex: {fileID: 0}
-  timer: {fileID: 0}
+  playerHand: {fileID: 0}
   location: 0
+  moveTime: 0
   playSpeed: 0
   rotateSpeed: 0
-  moveTime: 0
+  angle: 0
+  timer: {fileID: 0}
   health: 0
   defense: 0
   attack: 0
@@ -588,12 +594,15 @@ MonoBehaviour:
   description: 
   cardName: 
   preRequiredCards: []
+  clicked: 0
   currentHex: {fileID: 0}
-  timer: {fileID: 0}
+  playerHand: {fileID: 0}
   location: 0
+  moveTime: 0
   playSpeed: 0
   rotateSpeed: 0
-  moveTime: 0
+  angle: 0
+  timer: {fileID: 0}
   health: 0
   defense: 0
   attack: 0

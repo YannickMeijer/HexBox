@@ -37,7 +37,7 @@ public class HexagonTile : MonoBehaviour
 
     public void OnMouseUpAsButton()
     {
-        GlobalMouseHandler.wasClicked(this);
+        GlobalMouseHandler.WasClicked(this);
     }
 
 	public int TileX

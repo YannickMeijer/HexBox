@@ -7,7 +7,7 @@ public static class GlobalMouseHandler: object
     public static Card lastSelected;
     public static Hand hand;
 
-    public static void wasClicked(HexagonTile targetHex)
+    public static void WasClicked(HexagonTile targetHex)
     {
         Debug.Log(lastSelected);
         Debug.Log(targetHex);

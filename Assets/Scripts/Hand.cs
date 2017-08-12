@@ -12,7 +12,7 @@ public class Hand : MonoBehaviour
     public Deck deck;
 
 
-    void Start()
+    private void Start()
     {
         mainCamera = GetComponentInParent<Camera>();
         startingHand = 3;
@@ -24,15 +24,19 @@ public class Hand : MonoBehaviour
     }
 
 
-    void Update()
+    private void Update()
     {
-        calcFrustum();
+        CalcFrustum();
         float frustumWidthDivision = frustumWidth / (cardsInHand.Count + 1);
 
         foreach (Card playCard in cardsInHand)
             playCard.UpdatePosition(new Vector3(frustumWidthDivision * (playCard.handPosition + 1), 0, 0), frustumHeight, cameraDistance);
     }
 
+	public void SelectCard(Card card)
+	{
+		card.IsSelected = true;
+	}
 
     public void PlayOnHexagon(HexagonTile targetHex)
     {
@@ -48,7 +52,7 @@ public class Hand : MonoBehaviour
         }
     }
 
-    void DrawCard()
+    private void DrawCard()
     {
         if (cardsInHand.Count < handLimit)
         {
@@ -62,7 +66,7 @@ public class Hand : MonoBehaviour
 
     }
 
-    void calcFrustum()
+    private void CalcFrustum()
     {
         frustumHeight = 2.0f * cameraDistance * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
         frustumWidth = mainCamera.aspect * frustumHeight;

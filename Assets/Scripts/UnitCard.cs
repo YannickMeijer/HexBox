@@ -50,9 +50,9 @@ public class UnitCard : Card
         }
     }
 
-    protected override void OnMouseUpAsButton()
+    protected override void OnMouseDown()
     {
-        base.OnMouseUpAsButton();
+		base.OnMouseDown();
         if(location == Location.PLAY)
         {
             GlobalMouseHandler.lastSelected = this;
