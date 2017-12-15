@@ -4,21 +4,26 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    public List<Card> cardsInHand;
-    public int cameraDistance, startingHand;
-    private Camera mainCamera;
-    public int handLimit;
-    public float frustumHeight, frustumWidth;
-    public Deck deck;
+    private const float CAMERA_DISTANCE = 3;
 
+    public int startingHand = 3;
+    public int handLimit = 10;
+
+    private float frustumWidth;
+    private List<Card> cards = new List<Card>();
+    private Camera mainCamera;
+    private Deck deck;
 
     private void Start()
     {
-        mainCamera = GetComponentInParent<Camera>();
-        startingHand = 3;
-        handLimit = 10;
         GlobalMouseHandler.hand = this;
 
+        mainCamera = GetComponentInParent<Camera>();
+        deck = GameObject.Find("Deck").GetComponent<Deck>();
+
+        SetHandPosition();
+
+        // Draw the starting hand.
         for (int x = 0; x < startingHand; x++)
             DrawCard();
     }
@@ -26,17 +31,17 @@ public class Hand : MonoBehaviour
 
     private void Update()
     {
-        CalcFrustum();
-        float frustumWidthDivision = frustumWidth / (cardsInHand.Count + 1);
-
-        foreach (Card playCard in cardsInHand)
-            playCard.UpdatePosition(new Vector3(frustumWidthDivision * (playCard.handPosition + 1), 0, 0), frustumHeight, cameraDistance);
+        UpdateCardPositions();
     }
 
-	public void SelectCard(Card card)
-	{
-		card.IsSelected = true;
-	}
+    public void SelectCard(Card card)
+    {
+        cards.ForEach(c => c.IsSelected = false);
+        GlobalMouseHandler.lastSelected = card;
+
+        if (card != null)
+            card.IsSelected = true;
+    }
 
     public void PlayOnHexagon(HexagonTile targetHex)
     {
@@ -44,9 +49,9 @@ public class Hand : MonoBehaviour
         {
             GlobalMouseHandler.lastSelected.Play(targetHex);
             int relevantPos = GlobalMouseHandler.lastSelected.handPosition;
-            cardsInHand.RemoveAt(relevantPos);
+            cards.RemoveAt(relevantPos);
 
-            foreach (Card handCard in cardsInHand)
+            foreach (Card handCard in cards)
                 if (relevantPos < handCard.handPosition)
                     handCard.handPosition -= 1;
         }
@@ -54,24 +59,41 @@ public class Hand : MonoBehaviour
 
     private void DrawCard()
     {
-        if (cardsInHand.Count < handLimit)
+        if (cards.Count < handLimit)
         {
-            Card temp = deck.DrawCard();
-            temp.transform.SetParent(this.transform);
-            temp.transform.rotation = this.transform.rotation;
-            temp.location = Card.Location.HAND;
-            temp.handPosition = cardsInHand.Count;
-            cardsInHand.Add(temp);
+            Card drawn = deck.DrawCard(this);
+            if (drawn != null)
+                cards.Add(drawn);
         }
-
     }
 
-    private void CalcFrustum()
+    /// <summary>
+    /// Set each card position based on the position in the hand.
+    /// </summary>
+    private void UpdateCardPositions()
     {
-        frustumHeight = 2.0f * cameraDistance * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        float frustumWidthDivision = frustumWidth / (cards.Count + 1);
+        for (int i = 0; i < cards.Count; i++)
+        {
+            Vector3 cardTransform = cards[i].transform.localPosition;
+            cardTransform.x = frustumWidthDivision * (i + 1);
+            cards[i].transform.localPosition = cardTransform;
+        }
+    }
+
+    /// <summary>
+    /// Set the hand position so the origin is located at the bottom-left corner of the camera.
+    /// </summary>
+    private void SetHandPosition()
+    {
+        float frustumHeight = 2 * CAMERA_DISTANCE * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
         frustumWidth = mainCamera.aspect * frustumHeight;
 
-        transform.localPosition = new Vector3(-frustumWidth / 2, -frustumHeight / 2, cameraDistance);
-        //Places the origin of Hand left and down from the camera, at the edge of what's visible.
+        transform.localPosition = new Vector3(-0.5f * frustumWidth, -0.5f * frustumHeight, CAMERA_DISTANCE);
+    }
+
+    public List<Card> Cards
+    {
+        get { return cards; }
     }
 }

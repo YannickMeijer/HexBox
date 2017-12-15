@@ -20,8 +20,7 @@ public class UnitCard : Card
 
     protected override void Update()
     {
-        base.Update();
-        //TODO:  on turntimer htting zero, move equal to movespeed down movement list
+        // TODO: on turntimer htting zero, move equal to movespeed down movement list.
         if (timer.unitProgress && !acted)
         {
             performActions = true;
@@ -29,12 +28,13 @@ public class UnitCard : Card
         }
         else
             acted = false;
+
         ExecuteActions();
     }
 
     void ExecuteActions()
     {
-        if (location == Location.PLAY)
+        if (location == CardLocation.PLAY)
         {
             if (movement.Count != 0 && transform.position == currentHex.transform.position && performActions)
             {
@@ -53,7 +53,7 @@ public class UnitCard : Card
     protected override void OnMouseDown()
     {
 		base.OnMouseDown();
-        if(location == Location.PLAY)
+        if(location == CardLocation.PLAY)
         {
             GlobalMouseHandler.lastSelected = this;
         }

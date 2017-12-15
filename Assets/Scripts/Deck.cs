@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
+    public List<GameObject> cards;
 
-    public List<Card> deckList;
-    public int drawn;
-
-	void Start () {
-	}
-
-    public Card DrawCard()
+    public Card DrawCard(Hand hand)
     {
-        Card output = deckList[deckList.Count-1];
-        drawn += 1;
-        deckList.RemoveAt(deckList.Count - 1);
-        return output;
+        Debug.Log("Drawing a card.");
+
+        if (cards.Count == 0)
+            return null;
+
+        Card drawn = Instantiate(cards[0], hand.transform).GetComponent<Card>();
+        cards.RemoveAt(0);
+
+        drawn.location = CardLocation.HAND;
+        drawn.handPosition = hand.Cards.Count;
+
+        return drawn;
     }
 }

@@ -22,8 +22,9 @@ GameObject:
   - component: {fileID: 33184815276942352}
   - component: {fileID: 23895988736174242}
   - component: {fileID: 95534056103182314}
-  - component: {fileID: 114354365230321716}
   - component: {fileID: 64693357571573104}
+  - component: {fileID: 114348230663106714}
+  - component: {fileID: 114557096246092448}
   m_Layer: 0
   m_Name: UnitCardPrefab
   m_TagString: Untagged
@@ -39,7 +40,7 @@ Transform:
   m_GameObject: {fileID: 1937113946419278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.48, y: 0.48, z: 0.3}
+  m_LocalScale: {x: 0.48, y: 0.48, z: 0.05}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -53,6 +54,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -68,6 +70,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -114,7 +117,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114354365230321716
+--- !u!114 &114348230663106714
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -122,24 +125,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1937113946419278}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 836df9da9accd194d87f65ca230c046f, type: 3}
+  m_Script: {fileID: 11500000, guid: 95b124dd2cbb23c40b642ba536a7e6e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114557096246092448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1937113946419278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b63884e62ef8bcc47b889e50ead1cd11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   deckCost: 0
   manaCost: 0
   deckLimit: 0
-  handPosition: 0
+  handPosition: 2
   flavourText: 
   description: 
   cardName: 
-  preRequiredCards: []
-  clicked: 0
-  currentHex: {fileID: 0}
-  playerHand: {fileID: 0}
-  location: 0
-  moveTime: 0
-  health: 0
-  defense: 0
-  attack: 0
-  sight: 0
-  contactDamage: 0
+  location: 1
+  playSpeed: 0
+  rotateSpeed: 0
+  angle: 0

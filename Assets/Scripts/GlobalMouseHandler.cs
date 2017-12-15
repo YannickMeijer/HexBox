@@ -13,7 +13,7 @@ public static class GlobalMouseHandler: object
         Debug.Log(targetHex);
         if (lastSelected != null)
         {
-            if (lastSelected.location == Card.Location.HAND)
+            if (lastSelected.location == CardLocation.HAND)
                 hand.PlayOnHexagon(targetHex);
             else
             {
