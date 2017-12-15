@@ -4,46 +4,36 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
+    public const float HIGHLIGHT_MOVE_DURATION = 0.5f;
     private static readonly Vector3 HIGHLIGHT_POSITION = new Vector3(0, 0.5f, -0.2f);
-    private const float HIGHLIGHT_MOVE_DURATION = 0.5f;
     private const float PLAY_MOVE_DURATION = 1.5f;
 
     // deckLimit: the amount of this type of card that is allowed in your deck.
     public int deckCost, manaCost, deckLimit, handPosition;
     public string flavourText, description, cardName;
     protected int difference;
-    public CardLocation location;
 
-    public float playSpeed, rotateSpeed, angle;
+    protected CardLocation location = CardLocation.HAND;
 
-    private bool mouseOver;
     private bool wasHighlighted;
 
     private Hand playerHand;
     protected TurnTimer timer;
     private SmoothMove smoothMove;
     protected HexagonTile currentHex;
+    private MouseHelper mouseHelper;
 
     protected virtual void Start()
     {
         playerHand = GameObject.Find("Hand").GetComponent<Hand>();
         timer = GameObject.Find("TurnTimer").GetComponent<TurnTimer>();
         smoothMove = GetComponent<SmoothMove>();
+        mouseHelper = GetComponent<MouseHelper>();
     }
 
     protected virtual void Update()
     {
         UpdateHighlight();
-    }
-
-    private void OnMouseEnter()
-    {
-        mouseOver = true;
-    }
-
-    private void OnMouseExit()
-    {
-        mouseOver = false;
     }
 
     protected virtual void OnMouseDown()
@@ -70,7 +60,7 @@ public class Card : MonoBehaviour
         if (location != CardLocation.HAND)
             return;
 
-        bool shouldHighlight = mouseOver || IsSelected;
+        bool shouldHighlight = mouseHelper.IsMouseOver || IsSelected;
 
         // Check whether wasHighlighted and shouldHighlight are the same, otherwise update the state.
         if (!wasHighlighted && shouldHighlight)
@@ -85,5 +75,10 @@ public class Card : MonoBehaviour
     {
         get;
         set;
+    }
+
+    public CardLocation Location
+    {
+        get { return location; }
     }
 }

@@ -10,7 +10,6 @@ public class Hand : MonoBehaviour
     public int handLimit = 10;
 
     private float frustumWidth;
-    private List<Card> cards = new List<Card>();
     private Camera mainCamera;
     private Deck deck;
 
@@ -36,7 +35,7 @@ public class Hand : MonoBehaviour
 
     public void SelectCard(Card card)
     {
-        cards.ForEach(c => c.IsSelected = false);
+        Cards.ForEach(c => c.IsSelected = false);
         GlobalMouseHandler.lastSelected = card;
 
         if (card != null)
@@ -49,9 +48,9 @@ public class Hand : MonoBehaviour
         {
             GlobalMouseHandler.lastSelected.Play(targetHex);
             int relevantPos = GlobalMouseHandler.lastSelected.handPosition;
-            cards.RemoveAt(relevantPos);
+            Cards[relevantPos].transform.SetParent(null);
 
-            foreach (Card handCard in cards)
+            foreach (Card handCard in Cards)
                 if (relevantPos < handCard.handPosition)
                     handCard.handPosition -= 1;
         }
@@ -59,11 +58,10 @@ public class Hand : MonoBehaviour
 
     private void DrawCard()
     {
-        if (cards.Count < handLimit)
+        if (Cards.Count < handLimit)
         {
-            Card drawn = deck.DrawCard(this);
-            if (drawn != null)
-                cards.Add(drawn);
+            deck.DrawCard(this);
+            UpdateCardPositions();
         }
     }
 
@@ -72,7 +70,9 @@ public class Hand : MonoBehaviour
     /// </summary>
     private void UpdateCardPositions()
     {
+        List<Card> cards = Cards;
         float frustumWidthDivision = frustumWidth / (cards.Count + 1);
+
         for (int i = 0; i < cards.Count; i++)
         {
             Vector3 cardTransform = cards[i].transform.localPosition;
@@ -94,6 +94,6 @@ public class Hand : MonoBehaviour
 
     public List<Card> Cards
     {
-        get { return cards; }
+        get { return new List<Card>(GetComponentsInChildren<Card>()); }
     }
 }

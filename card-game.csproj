@@ -227,6 +227,7 @@
     <Compile Include="Assets\Scripts\Deck.cs" />
     <Compile Include="Assets\Scripts\GlobalMouseHandler.cs" />
     <Compile Include="Assets\Scripts\Hand.cs" />
+    <Compile Include="Assets\Scripts\Helpers\MouseHelper.cs" />
     <Compile Include="Assets\Scripts\HexagonDirection.cs" />
     <Compile Include="Assets\Scripts\HexagonTile.cs" />
     <Compile Include="Assets\Scripts\PlayingFieldController.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Assets\Scripts\Units\DamageType.cs" />
     <Compile Include="Assets\Scripts\Units\Unit.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

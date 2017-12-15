@@ -15,8 +15,7 @@ public class Deck : MonoBehaviour
 
         Card drawn = Instantiate(cards[0], hand.transform).GetComponent<Card>();
         cards.RemoveAt(0);
-
-        drawn.location = CardLocation.HAND;
+        
         drawn.handPosition = hand.Cards.Count;
 
         return drawn;

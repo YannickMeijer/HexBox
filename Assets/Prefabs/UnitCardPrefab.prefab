@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 64693357571573104}
   - component: {fileID: 114348230663106714}
   - component: {fileID: 114557096246092448}
+  - component: {fileID: 114957412488917792}
   m_Layer: 0
   m_Name: UnitCardPrefab
   m_TagString: Untagged
@@ -146,7 +147,14 @@ MonoBehaviour:
   flavourText: 
   description: 
   cardName: 
-  location: 1
-  playSpeed: 0
-  rotateSpeed: 0
-  angle: 0
+--- !u!114 &114957412488917792
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1937113946419278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd0c95a4a7cf9049895767dc1b86416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
