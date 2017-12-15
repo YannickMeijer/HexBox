@@ -15,8 +15,6 @@ public class Hand : MonoBehaviour
 
     private void Start()
     {
-        GlobalMouseHandler.hand = this;
-
         mainCamera = GetComponentInParent<Camera>();
         deck = GameObject.Find("Deck").GetComponent<Deck>();
 
@@ -27,32 +25,21 @@ public class Hand : MonoBehaviour
             DrawCard();
     }
 
-
-    private void Update()
-    {
-        UpdateCardPositions();
-    }
-
     public void SelectCard(Card card)
     {
         Cards.ForEach(c => c.IsSelected = false);
-        GlobalMouseHandler.lastSelected = card;
 
         if (card != null)
             card.IsSelected = true;
     }
 
-    public void PlayOnHexagon(HexagonTile targetHex)
+    public void TileClicked(HexagonTile tile)
     {
-        if (GlobalMouseHandler.lastSelected != null)
+        Card selectedCard = Cards.Find(c => c.IsSelected);
+        if (selectedCard != null)
         {
-            GlobalMouseHandler.lastSelected.Play(targetHex);
-            int relevantPos = GlobalMouseHandler.lastSelected.handPosition;
-            Cards[relevantPos].transform.SetParent(null);
-
-            foreach (Card handCard in Cards)
-                if (relevantPos < handCard.handPosition)
-                    handCard.handPosition -= 1;
+            selectedCard.Play(tile);
+            UpdateCardPositions();
         }
     }
 
@@ -77,7 +64,7 @@ public class Hand : MonoBehaviour
         {
             Vector3 cardTransform = cards[i].transform.localPosition;
             cardTransform.x = frustumWidthDivision * (i + 1);
-            cards[i].transform.localPosition = cardTransform;
+            cards[i].gameObject.GetComponent<SmoothMove>().Position.MoveTo(cardTransform, Card.HIGHLIGHT_MOVE_DURATION);
         }
     }
 

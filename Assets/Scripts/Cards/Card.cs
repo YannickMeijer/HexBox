@@ -9,7 +9,7 @@ public class Card : MonoBehaviour
     private const float PLAY_MOVE_DURATION = 1.5f;
 
     // deckLimit: the amount of this type of card that is allowed in your deck.
-    public int deckCost, manaCost, deckLimit, handPosition;
+    public int deckCost, manaCost, deckLimit;
     public string flavourText, description, cardName;
     protected int difference;
 

@@ -7,19 +7,17 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8D93651A-6D23-0200-87CF-D70986453580}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp.dll</AssemblyName>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.2.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -225,7 +223,6 @@
     <Compile Include="Assets\Scripts\Cards\CardLocation.cs" />
     <Compile Include="Assets\Scripts\Cards\UnitCard.cs" />
     <Compile Include="Assets\Scripts\Deck.cs" />
-    <Compile Include="Assets\Scripts\GlobalMouseHandler.cs" />
     <Compile Include="Assets\Scripts\Hand.cs" />
     <Compile Include="Assets\Scripts\Helpers\MouseHelper.cs" />
     <Compile Include="Assets\Scripts\HexagonDirection.cs" />
@@ -238,7 +235,6 @@
     <Compile Include="Assets\Scripts\Units\DamageType.cs" />
     <Compile Include="Assets\Scripts\Units\Unit.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

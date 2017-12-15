@@ -7,7 +7,7 @@ public class SmoothMove : MonoBehaviour
     private SmoothPosition position;
     private SmoothRotation rotation;
 
-    private void Start()
+    private void Awake()
     {
         position = new SmoothPosition(this);
         rotation = new SmoothRotation(this);

@@ -5,15 +5,16 @@ using UnityEngine;
 public class HexagonTile : MonoBehaviour
 {
     public float Radius = 0.5f;
+    public Card card;
 
     [SerializeField]
     private int tileX;
     [SerializeField]
     private int tileZ;
 
-    private float offsetX, offsetZ;
-
-    public Card card;
+    private float offsetX;
+    private float offsetZ;
+    private Hand playerHand;
 
     private void Start()
     {
@@ -21,10 +22,10 @@ public class HexagonTile : MonoBehaviour
         // Get the offsets.
         offsetX = Radius * 1.5f;
         offsetZ = Radius * Mathf.Sqrt(3);
-
         UpdatePosition();
 
-        GetComponent<MouseHelper>().OnClick += () => GlobalMouseHandler.WasClicked(this);
+        playerHand = GameObject.Find("Hand").GetComponent<Hand>();
+        GetComponent<MouseHelper>().OnClick += () => playerHand.TileClicked(this);
     }
 
     private void UpdatePosition()

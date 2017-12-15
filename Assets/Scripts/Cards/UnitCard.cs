@@ -50,15 +50,6 @@ public class UnitCard : Card
         }
     }
 
-    protected override void OnMouseDown()
-    {
-		base.OnMouseDown();
-        if(location == CardLocation.PLAY)
-        {
-            GlobalMouseHandler.lastSelected = this;
-        }
-    }
-
     public void Pathfinding(HexagonTile targetHex)
     {
         //placeholder
