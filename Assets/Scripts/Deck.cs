@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    public List<GameObject> cards;
+    public GameObject CardPrefab;
 
-    public Card DrawCard(Hand hand)
+    public void DrawCard(Hand hand)
     {
-        Debug.Log("Drawing a card.");
+        GameObject card = Instantiate(CardPrefab, hand.transform);
 
-        if (cards.Count == 0)
-            return null;
-
-        Card drawn = Instantiate(cards[0], hand.transform).GetComponent<Card>();
-        cards.RemoveAt(0);
-        return drawn;
+        // TODO: separate this to a nice card component generator or something.
+        card.AddComponent<BuildingCard>();
+        BuildingCard component = card.GetComponent<BuildingCard>();
+        component.Building = Resources.Load<GameObject>("Buildings/Cube");
     }
 }

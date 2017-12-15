@@ -31,6 +31,9 @@ public class SmoothMove : MonoBehaviour
 
     public abstract class AbstractMove<T>
     {
+        public delegate void DoneHandler();
+        public event DoneHandler Done;
+
         protected readonly SmoothMove parent;
 
         protected bool moving;
@@ -61,7 +64,12 @@ public class SmoothMove : MonoBehaviour
 
                 // Check if we are at the target.
                 if (timeTaken >= duration)
+                {
                     moving = false;
+
+                    if (Done != null)
+                        Done();
+                }
             }
         }
 

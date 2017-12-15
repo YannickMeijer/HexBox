@@ -9,7 +9,6 @@ public class UnitCard : Card
     bool acted, performActions;
     int moved;
 
-
     protected override void Start()
     {
         base.Start();

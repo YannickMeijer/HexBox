@@ -130,9 +130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Radius: 0.5
+  card: {fileID: 0}
   tileX: 0
   tileZ: 0
-  card: {fileID: 0}
 --- !u!114 &114868099381429158
 MonoBehaviour:
   m_ObjectHideFlags: 1

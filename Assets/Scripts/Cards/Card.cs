@@ -8,11 +8,6 @@ public class Card : MonoBehaviour
     private static readonly Vector3 HIGHLIGHT_POSITION = new Vector3(0, 0.5f, -0.2f);
     private const float PLAY_MOVE_DURATION = 1.5f;
 
-    // deckLimit: the amount of this type of card that is allowed in your deck.
-    public int deckCost, manaCost, deckLimit;
-    public string flavourText, description, cardName;
-    protected int difference;
-
     protected CardLocation location = CardLocation.HAND;
 
     private bool wasHighlighted;
@@ -25,7 +20,7 @@ public class Card : MonoBehaviour
 
     protected virtual void Start()
     {
-        playerHand = GameObject.Find("Hand").GetComponent<Hand>();
+        playerHand = GameObject.Find("MainCamera/Hand").GetComponent<Hand>();
         timer = GameObject.Find("TurnTimer").GetComponent<TurnTimer>();
         smoothMove = GetComponent<SmoothMove>();
         mouseHelper = GetComponent<MouseHelper>();
@@ -43,16 +38,27 @@ public class Card : MonoBehaviour
             playerHand.SelectCard(IsSelected ? null : this);
     }
 
-    public void Play(HexagonTile targetHex)
+    public void Play(HexagonTile tile)
     {
-        currentHex = targetHex;
+        currentHex = tile;
 
         location = CardLocation.PLAY;
         transform.SetParent(null);
 
         // Move the card to the tile.
-        smoothMove.Position.MoveToAbsolute(targetHex.transform.position + Vector3.up * 0.2f, PLAY_MOVE_DURATION);
-        smoothMove.Rotation.RotateTo(targetHex.transform.rotation, PLAY_MOVE_DURATION);
+        smoothMove.Position.MoveToAbsolute(tile.transform.position + Vector3.up * 0.2f, PLAY_MOVE_DURATION);
+        smoothMove.Rotation.RotateTo(tile.transform.rotation, PLAY_MOVE_DURATION);
+
+        smoothMove.Position.Done += () => Played(tile);
+    }
+
+    /// <summary>
+    /// This method is invoked after the card has been moved to the playing field.
+    /// </summary>
+    /// <param name="tile">The tile the card has been placed on.</param>
+    protected virtual void Played(HexagonTile tile)
+    {
+        Destroy(gameObject);
     }
 
     private void UpdateHighlight()
@@ -75,10 +81,5 @@ public class Card : MonoBehaviour
     {
         get;
         set;
-    }
-
-    public CardLocation Location
-    {
-        get { return location; }
     }
 }

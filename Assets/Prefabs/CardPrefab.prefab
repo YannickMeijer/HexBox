@@ -24,10 +24,9 @@ GameObject:
   - component: {fileID: 95534056103182314}
   - component: {fileID: 64693357571573104}
   - component: {fileID: 114348230663106714}
-  - component: {fileID: 114557096246092448}
-  - component: {fileID: 114957412488917792}
+  - component: {fileID: 114054153905059926}
   m_Layer: 0
-  m_Name: UnitCardPrefab
+  m_Name: CardPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,6 +117,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114054153905059926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1937113946419278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd0c95a4a7cf9049895767dc1b86416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114348230663106714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -127,34 +137,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95b124dd2cbb23c40b642ba536a7e6e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114557096246092448
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1937113946419278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b63884e62ef8bcc47b889e50ead1cd11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deckCost: 0
-  manaCost: 0
-  deckLimit: 0
-  handPosition: 2
-  flavourText: 
-  description: 
-  cardName: 
---- !u!114 &114957412488917792
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1937113946419278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fd0c95a4a7cf9049895767dc1b86416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -344,10 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb2f9b0c4e3cf744a025bb1e666a282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cards:
-  - {fileID: 1937113946419278, guid: 0813da0ec96843745b7292613369cdfe, type: 2}
-  - {fileID: 1937113946419278, guid: 0813da0ec96843745b7292613369cdfe, type: 2}
-  - {fileID: 1937113946419278, guid: 0813da0ec96843745b7292613369cdfe, type: 2}
+  CardPrefab: {fileID: 1937113946419278, guid: 0813da0ec96843745b7292613369cdfe, type: 2}
 --- !u!4 &1688285485
 Transform:
   m_ObjectHideFlags: 0
