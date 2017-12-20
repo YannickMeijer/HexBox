@@ -47,7 +47,7 @@ public class Card : MonoBehaviour
         smoothMove.Position.MoveToAbsolute(tile.transform.position + Vector3.up * 0.2f, PLAY_MOVE_DURATION);
         smoothMove.Rotation.RotateTo(tile.transform.rotation, PLAY_MOVE_DURATION);
 
-        smoothMove.Position.Done += card => Played(tile);
+        smoothMove.Position.DoneOnce += card => Played(tile);
     }
 
     /// <summary>

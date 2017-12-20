@@ -66,7 +66,7 @@ public class Hand : MonoBehaviour
         smoothMove.Position.MoveTo(Vector3.zero, Card.PLAY_MOVE_DURATION);
         smoothMove.Rotation.RotateTo(Quaternion.Euler(0, 0, 0), Card.PLAY_MOVE_DURATION);
 
-        smoothMove.Position.Done += card => card.GetComponent<Card>().Location = CardLocation.HAND;
+        smoothMove.Position.DoneOnce += card => card.GetComponent<Card>().Location = CardLocation.HAND;
 
         UpdateCardPositions(Card.PLAY_MOVE_DURATION);
     }
@@ -84,6 +84,10 @@ public class Hand : MonoBehaviour
             float newX = frustumWidthDivision * (i + 1);
             Vector3 delta = new Vector3(newX - smoothMove.Position.Target.x, 0, 0);
             smoothMove.Position.MoveRelative(delta, speed);
+
+            // Set the card location to floating to prevent highlight, reset to hand when movement is done.
+            cards[i].GetComponent<Card>().Location = CardLocation.FLOATING;
+            smoothMove.Position.DoneOnce += card => card.GetComponent<Card>().Location = CardLocation.HAND;
         }
     }
 

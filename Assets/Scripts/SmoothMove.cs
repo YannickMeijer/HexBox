@@ -33,6 +33,7 @@ public class SmoothMove : MonoBehaviour
     {
         public delegate void DoneHandler(GameObject gameObject);
         public event DoneHandler Done;
+        public event DoneHandler DoneOnce;
 
         protected readonly SmoothMove parent;
 
@@ -69,6 +70,11 @@ public class SmoothMove : MonoBehaviour
 
                     if (Done != null)
                         Done(parent.gameObject);
+
+                    if (DoneOnce != null)
+                        DoneOnce(parent.gameObject);
+                    // Reset the event.
+                    DoneOnce = null;
                 }
             }
         }

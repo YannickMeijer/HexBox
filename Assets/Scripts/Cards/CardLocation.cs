@@ -3,5 +3,6 @@
     DECK,
     HAND,
     GRAVE,
-    PLAY
+    PLAY,
+    FLOATING
 }
