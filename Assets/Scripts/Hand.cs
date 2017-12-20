@@ -58,13 +58,15 @@ public class Hand : MonoBehaviour
         if (drawn == null)
             return;
 
-        // Add the card to the hand.
-        drawn.GetComponent<Card>().Location = CardLocation.HAND;
         cards.Add(drawn);
-
         drawn.transform.SetParent(transform);
-        drawn.transform.localPosition = Vector3.zero;
-        drawn.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+        // Move the card to the hand.
+        SmoothMove smoothMove = drawn.GetComponent<SmoothMove>();
+        smoothMove.Position.MoveTo(Vector3.zero, Card.PLAY_MOVE_DURATION);
+        smoothMove.Rotation.RotateTo(Quaternion.Euler(0, 0, 0), Card.PLAY_MOVE_DURATION);
+
+        smoothMove.Position.Done += card => card.GetComponent<Card>().Location = CardLocation.HAND;
 
         UpdateCardPositions(Card.PLAY_MOVE_DURATION);
     }

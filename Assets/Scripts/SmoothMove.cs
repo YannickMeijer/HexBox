@@ -31,7 +31,7 @@ public class SmoothMove : MonoBehaviour
 
     public abstract class AbstractMove<T>
     {
-        public delegate void DoneHandler();
+        public delegate void DoneHandler(GameObject gameObject);
         public event DoneHandler Done;
 
         protected readonly SmoothMove parent;
@@ -68,7 +68,7 @@ public class SmoothMove : MonoBehaviour
                     moving = false;
 
                     if (Done != null)
-                        Done();
+                        Done(parent.gameObject);
                 }
             }
         }

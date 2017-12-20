@@ -52,6 +52,7 @@ public class Deck : MonoBehaviour
         // Set the card's parent and position.
         card.transform.SetParent(transform);
         card.transform.localPosition = Vector3.zero;
+        card.transform.localRotation = Quaternion.Euler(Vector3.zero);
         card.GetComponent<Card>().Location = CardLocation.DECK;
 
         ADD_CARD_METHODS[position].Invoke(cards, card);
