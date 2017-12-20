@@ -6,6 +6,7 @@ public class Hand : MonoBehaviour
 {
     private const float CAMERA_DISTANCE = 3;
 
+    public GameObject DeckGameObject;
     public int startingHand = 3;
     public int handLimit = 10;
 
@@ -13,10 +14,12 @@ public class Hand : MonoBehaviour
     private Camera mainCamera;
     private Deck deck;
 
+    private List<GameObject> cards = new List<GameObject>();
+
     private void Start()
     {
         mainCamera = GetComponentInParent<Camera>();
-        deck = GameObject.Find("Deck").GetComponent<Deck>();
+        deck = DeckGameObject.GetComponent<Deck>();
 
         SetHandPosition();
 
@@ -27,7 +30,7 @@ public class Hand : MonoBehaviour
 
     public void SelectCard(Card card)
     {
-        Cards.ForEach(c => c.IsSelected = false);
+        cards.ForEach(c => c.GetComponent<Card>().IsSelected = false);
 
         if (card != null)
             card.IsSelected = true;
@@ -35,21 +38,35 @@ public class Hand : MonoBehaviour
 
     public void TileClicked(HexagonTile tile)
     {
-        Card selectedCard = Cards.Find(c => c.IsSelected);
+        GameObject selectedCard = cards.Find(card => card.GetComponent<Card>().IsSelected);
+
         if (selectedCard != null)
         {
-            selectedCard.Play(tile);
+            cards.Remove(selectedCard);
+            selectedCard.GetComponent<Card>().Play(tile);
             UpdateCardPositions();
         }
     }
 
     private void DrawCard()
     {
-        if (Cards.Count < handLimit)
-        {
-            deck.DrawCard(this);
-            UpdateCardPositions();
-        }
+        if (cards.Count >= handLimit)
+            return;
+
+        // Try to draw a card.
+        GameObject drawn = deck.Draw();
+        if (drawn == null)
+            return;
+
+        // Add the card to the hand.
+        drawn.GetComponent<Card>().Location = CardLocation.HAND;
+        cards.Add(drawn);
+
+        drawn.transform.SetParent(transform);
+        drawn.transform.localPosition = Vector3.zero;
+        drawn.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+        UpdateCardPositions();
     }
 
     /// <summary>
@@ -57,14 +74,13 @@ public class Hand : MonoBehaviour
     /// </summary>
     private void UpdateCardPositions()
     {
-        List<Card> cards = Cards;
         float frustumWidthDivision = frustumWidth / (cards.Count + 1);
 
         for (int i = 0; i < cards.Count; i++)
         {
             Vector3 cardTransform = cards[i].transform.localPosition;
             cardTransform.x = frustumWidthDivision * (i + 1);
-            cards[i].gameObject.GetComponent<SmoothMove>().Position.MoveTo(cardTransform, Card.HIGHLIGHT_MOVE_DURATION);
+            cards[i].GetComponent<SmoothMove>().Position.MoveTo(cardTransform, Card.HIGHLIGHT_MOVE_DURATION);
         }
     }
 
@@ -77,10 +93,5 @@ public class Hand : MonoBehaviour
         frustumWidth = mainCamera.aspect * frustumHeight;
 
         transform.localPosition = new Vector3(-0.5f * frustumWidth, -0.5f * frustumHeight, CAMERA_DISTANCE);
-    }
-
-    public List<Card> Cards
-    {
-        get { return new List<Card>(GetComponentsInChildren<Card>()); }
     }
 }

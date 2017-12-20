@@ -8,8 +8,6 @@ public class Card : MonoBehaviour
     private static readonly Vector3 HIGHLIGHT_POSITION = new Vector3(0, 0.5f, -0.2f);
     private const float PLAY_MOVE_DURATION = 1.5f;
 
-    protected CardLocation location = CardLocation.HAND;
-
     private bool wasHighlighted;
 
     private Hand playerHand;
@@ -34,7 +32,7 @@ public class Card : MonoBehaviour
     protected virtual void OnMouseDown()
     {
         // Select or deselect the card.
-        if (location == CardLocation.HAND)
+        if (Location == CardLocation.HAND)
             playerHand.SelectCard(IsSelected ? null : this);
     }
 
@@ -42,7 +40,7 @@ public class Card : MonoBehaviour
     {
         currentHex = tile;
 
-        location = CardLocation.PLAY;
+        Location = CardLocation.PLAY;
         transform.SetParent(null);
 
         // Move the card to the tile.
@@ -63,7 +61,7 @@ public class Card : MonoBehaviour
 
     private void UpdateHighlight()
     {
-        if (location != CardLocation.HAND)
+        if (Location != CardLocation.HAND)
             return;
 
         bool shouldHighlight = mouseHelper.IsMouseOver || IsSelected;
@@ -78,6 +76,12 @@ public class Card : MonoBehaviour
     }
 
     public bool IsSelected
+    {
+        get;
+        set;
+    }
+
+    public CardLocation Location
     {
         get;
         set;

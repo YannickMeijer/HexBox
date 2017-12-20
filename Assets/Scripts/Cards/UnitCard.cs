@@ -33,7 +33,7 @@ public class UnitCard : Card
 
     void ExecuteActions()
     {
-        if (location == CardLocation.PLAY)
+        if (Location == CardLocation.PLAY)
         {
             if (movement.Count != 0 && transform.position == currentHex.transform.position && performActions)
             {
