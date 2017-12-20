@@ -66,21 +66,22 @@ public class Hand : MonoBehaviour
         drawn.transform.localPosition = Vector3.zero;
         drawn.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-        UpdateCardPositions();
+        UpdateCardPositions(Card.PLAY_MOVE_DURATION);
     }
 
     /// <summary>
     /// Set each card position based on the position in the hand.
     /// </summary>
-    private void UpdateCardPositions()
+    private void UpdateCardPositions(float speed = Card.HIGHLIGHT_MOVE_DURATION)
     {
         float frustumWidthDivision = frustumWidth / (cards.Count + 1);
 
         for (int i = 0; i < cards.Count; i++)
         {
-            Vector3 cardTransform = cards[i].transform.localPosition;
-            cardTransform.x = frustumWidthDivision * (i + 1);
-            cards[i].GetComponent<SmoothMove>().Position.MoveTo(cardTransform, Card.HIGHLIGHT_MOVE_DURATION);
+            SmoothMove smoothMove = cards[i].GetComponent<SmoothMove>();
+            float newX = frustumWidthDivision * (i + 1);
+            Vector3 delta = new Vector3(newX - smoothMove.Position.Target.x, 0, 0);
+            smoothMove.Position.MoveRelative(delta, speed);
         }
     }
 

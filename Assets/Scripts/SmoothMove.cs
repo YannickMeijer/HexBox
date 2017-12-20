@@ -84,6 +84,11 @@ public class SmoothMove : MonoBehaviour
         }
 
         protected abstract void DoUpdate(float lerpFactor);
+
+        public T Target
+        {
+            get { return target; }
+        }
     }
 
     public class SmoothPosition : AbstractMove<Vector3>
@@ -115,7 +120,8 @@ public class SmoothMove : MonoBehaviour
             if (moving)
             {
                 from = target;
-                timeMultiplier = timeTaken / base.duration;
+                if (timeTaken != 0)
+                    timeMultiplier = timeTaken / base.duration;
             }
 
             MoveTo(from + change, duration * timeMultiplier);
