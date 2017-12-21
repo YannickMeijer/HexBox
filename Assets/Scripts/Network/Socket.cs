@@ -25,13 +25,14 @@ public class Socket
 
         // Open the socket.
         channelId = config.AddChannel(qosType);
+        Debug.Log("Created " + qosType + " channel, id: " + channelId);
         socketId = NetworkTransport.AddHost(topology, port);
-        Debug.Log("Opened socket on port " + port + ", socket id: " + socketId);
+        Debug.Log("Opened socket on port " + port + ", id: " + socketId);
 
         // Connect.
         byte errorByte;
         connectionId = NetworkTransport.Connect(socketId, address, connectPort, 0, out errorByte);
-        Debug.Log("Connecting to " + address + ":" + connectPort + ", connection id: " + socketId);
+        Debug.Log("Connecting to " + address + ":" + connectPort + ", id: " + connectionId);
         NetworkController.LogNetworkError(errorByte);
     }
 
