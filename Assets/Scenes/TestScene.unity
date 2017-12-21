@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 134031258}
   - component: {fileID: 134031259}
   m_Layer: 0
-  m_Name: Hand
+  m_Name: LocalPlayer
   m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

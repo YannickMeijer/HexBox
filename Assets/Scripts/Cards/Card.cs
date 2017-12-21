@@ -18,7 +18,7 @@ public class Card : MonoBehaviour
 
     protected virtual void Start()
     {
-        playerHand = GameObject.Find("MainCamera/Hand").GetComponent<Hand>();
+        playerHand = GameObject.Find("MainCamera/LocalPlayer").GetComponent<Hand>();
         timer = GameObject.Find("TurnTimer").GetComponent<TurnTimer>();
         smoothMove = GetComponent<SmoothMove>();
         mouseHelper = GetComponent<MouseHelper>();
