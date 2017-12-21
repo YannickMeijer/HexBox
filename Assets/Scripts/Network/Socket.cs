@@ -10,24 +10,25 @@ public class Socket
     private readonly int socketId; // Aka hostId.
     private readonly int connectionId;
 
-    public Socket(HostTopology topology, ConnectionConfig config, QosType qosType, string address, int port)
+    public Socket(ConnectionConfig config, QosType qosType, string address)
     {
         // TODO: temporary code to be able to test 2 instances on 1 machine.
         // Need to figure out something so this works both local and remote.
-        port = 8888;
-        int connectPort = 8889;
+        int hostPort = 25565;
+        int connectPort = 25564;
         if (Debug.isDebugBuild)
         {
             Debug.Log("Debug build, switching port numbers.");
-            port = 8889;
-            connectPort = 8888;
+            hostPort = 25564;
+            connectPort = 25565;
         }
 
-        // Open the socket.
+        // Add the channel, open the socket.
         channelId = config.AddChannel(qosType);
         Debug.Log("Created " + qosType + " channel, id: " + channelId);
-        socketId = NetworkTransport.AddHost(topology, port);
-        Debug.Log("Opened socket on port " + port + ", id: " + socketId);
+        HostTopology topology = new HostTopology(config, 2);
+        socketId = NetworkTransport.AddHost(topology, hostPort);
+        Debug.Log("Opened socket on port " + hostPort + ", id: " + socketId);
 
         // Connect.
         byte errorByte;

@@ -7,7 +7,6 @@ using UnityEngine.Networking;
 public class NetworkController : MonoBehaviour
 {
     private const int PORT = 8888;
-    private const int MAX_CONNECTIONS = 2;
 
     public delegate void NetworkEventHandler();
     public event NetworkEventHandler OnConnected;
@@ -32,9 +31,8 @@ public class NetworkController : MonoBehaviour
         // Initialize and configure the network.
         NetworkTransport.Init();
         ConnectionConfig config = new ConnectionConfig();
-        HostTopology topology = new HostTopology(config, MAX_CONNECTIONS);
 
-        reliableSocket = new Socket(topology, config, QosType.Reliable, "127.0.0.1", 8888);
+        reliableSocket = new Socket(config, QosType.Reliable, "127.0.0.1");
 
         // Hook debug messages into the network events.
         OnConnected += () => Debug.Log("Connected.");
