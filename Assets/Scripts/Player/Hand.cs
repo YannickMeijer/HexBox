@@ -9,34 +9,52 @@ public class Hand : MonoBehaviour
     public int StartingHand = 3;
     public int Limit = 10;
 
+    private NetworkController network;
+
     private float frustumWidth;
     private List<GameObject> cards = new List<GameObject>();
 
     private void Start()
     {
+        network = GameObject.Find("GameController").GetComponent<NetworkController>();
         SetHandPosition();
     }
 
+    /// <summary>
+    /// Select a card.
+    /// </summary>
+    /// <param name="card">The card to select.</param>
     public void SelectCard(Card card)
     {
         cards.ForEach(c => c.GetComponent<Card>().IsSelected = false);
-
         if (card != null)
             card.IsSelected = true;
     }
 
+    /// <summary>
+    /// Indicate a tile has been clicked, playing the selected card (if any).
+    /// </summary>
+    /// <param name="tile">The clicked tile.</param>
     public void TileClicked(HexagonTile tile)
     {
         GameObject selectedCard = cards.Find(card => card.GetComponent<Card>().IsSelected);
 
         if (selectedCard != null)
         {
+            // Play the card.
             cards.Remove(selectedCard);
             selectedCard.GetComponent<Card>().Play(tile);
             UpdateCardPositions(Card.HIGHLIGHT_MOVE_DURATION);
+
+            network.ReliableSocket.Send("Playing card: " + selectedCard.name);
         }
     }
 
+    /// <summary>
+    /// Draw a card.
+    /// If the hand is full, no card will be drawn.
+    /// </summary>
+    /// <param name="deck">The deck to draw the card from.</param>
     public void DrawCard(Deck deck)
     {
         if (cards.Count >= Limit)
@@ -47,6 +65,7 @@ public class Hand : MonoBehaviour
         if (drawn == null)
             return;
 
+        // Add the card to the hand.
         cards.Add(drawn);
         drawn.transform.SetParent(transform);
         drawn.GetComponent<Card>().SetHand(this);
@@ -70,6 +89,7 @@ public class Hand : MonoBehaviour
 
         for (int i = 0; i < cards.Count; i++)
         {
+            // Calculate the required relative movement, using the SmoothMove target.
             SmoothMove smoothMove = cards[i].GetComponent<SmoothMove>();
             float newX = frustumWidthDivision * (i + 1);
             Vector3 delta = new Vector3(newX - smoothMove.Position.Target.x, 0, 0);
