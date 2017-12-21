@@ -14,7 +14,8 @@ public class Socket
     {
         // TODO: temporary code to be able to test 2 instances on 1 machine.
         // Need to figure out something so this works both local and remote.
-        int connectPort = port;
+        port = 8888;
+        int connectPort = 8889;
         if (Debug.isDebugBuild)
         {
             Debug.Log("Debug build, switching port numbers.");
