@@ -18,22 +18,21 @@ public class Card : MonoBehaviour
 
     protected virtual void Start()
     {
-        playerHand = GameObject.Find("MainCamera/LocalPlayer").GetComponent<Hand>();
         timer = GameObject.Find("TurnTimer").GetComponent<TurnTimer>();
         smoothMove = GetComponent<SmoothMove>();
+
         mouseHelper = GetComponent<MouseHelper>();
+        mouseHelper.OnClick += () =>
+        {
+            // Select or deselect the card.
+            if (Location == CardLocation.HAND)
+                playerHand.SelectCard(IsSelected ? null : this);
+        };
     }
 
     protected virtual void Update()
     {
         UpdateHighlight();
-    }
-
-    protected virtual void OnMouseDown()
-    {
-        // Select or deselect the card.
-        if (Location == CardLocation.HAND)
-            playerHand.SelectCard(IsSelected ? null : this);
     }
 
     public void Play(HexagonTile tile)
@@ -48,6 +47,12 @@ public class Card : MonoBehaviour
         smoothMove.Rotation.RotateTo(tile.transform.rotation, PLAY_MOVE_DURATION);
 
         smoothMove.Position.DoneOnce += card => Played(tile);
+    }
+
+    public void SetHand(Hand hand)
+    {
+        Location = CardLocation.HAND;
+        playerHand = hand;
     }
 
     /// <summary>

@@ -6,26 +6,15 @@ public class Hand : MonoBehaviour
 {
     private const float CAMERA_DISTANCE = 3;
 
-    public GameObject DeckGameObject;
-    public int startingHand = 3;
-    public int handLimit = 10;
+    public int StartingHand = 3;
+    public int Limit = 10;
 
     private float frustumWidth;
-    private Camera mainCamera;
-    private Deck deck;
-
     private List<GameObject> cards = new List<GameObject>();
 
     private void Start()
     {
-        mainCamera = GetComponentInParent<Camera>();
-        deck = DeckGameObject.GetComponent<Deck>();
-
         SetHandPosition();
-
-        // Draw the starting hand.
-        for (int x = 0; x < startingHand; x++)
-            DrawCard();
     }
 
     public void SelectCard(Card card)
@@ -44,13 +33,13 @@ public class Hand : MonoBehaviour
         {
             cards.Remove(selectedCard);
             selectedCard.GetComponent<Card>().Play(tile);
-            UpdateCardPositions();
+            UpdateCardPositions(Card.HIGHLIGHT_MOVE_DURATION);
         }
     }
 
-    private void DrawCard()
+    public void DrawCard(Deck deck)
     {
-        if (cards.Count >= handLimit)
+        if (cards.Count >= Limit)
             return;
 
         // Try to draw a card.
@@ -60,11 +49,12 @@ public class Hand : MonoBehaviour
 
         cards.Add(drawn);
         drawn.transform.SetParent(transform);
+        drawn.GetComponent<Card>().SetHand(this);
 
         // Move the card to the hand.
         SmoothMove smoothMove = drawn.GetComponent<SmoothMove>();
         smoothMove.Position.MoveTo(Vector3.zero, Card.PLAY_MOVE_DURATION);
-        smoothMove.Rotation.RotateTo(Quaternion.Euler(0, 0, 0), Card.PLAY_MOVE_DURATION);
+        smoothMove.Rotation.RotateTo(Quaternion.Euler(Vector3.zero), Card.PLAY_MOVE_DURATION);
 
         smoothMove.Position.DoneOnce += card => card.GetComponent<Card>().Location = CardLocation.HAND;
 
@@ -74,7 +64,7 @@ public class Hand : MonoBehaviour
     /// <summary>
     /// Set each card position based on the position in the hand.
     /// </summary>
-    private void UpdateCardPositions(float speed = Card.HIGHLIGHT_MOVE_DURATION)
+    private void UpdateCardPositions(float speed)
     {
         float frustumWidthDivision = frustumWidth / (cards.Count + 1);
 
@@ -96,6 +86,7 @@ public class Hand : MonoBehaviour
     /// </summary>
     private void SetHandPosition()
     {
+        Camera mainCamera = GetComponentInParent<Camera>();
         float frustumHeight = 2 * CAMERA_DISTANCE * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
         frustumWidth = mainCamera.aspect * frustumHeight;
 

@@ -168,6 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 134031258}
   - component: {fileID: 134031259}
+  - component: {fileID: 134031260}
   m_Layer: 0
   m_Name: LocalPlayer
   m_TagString: Hand
@@ -199,9 +200,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83dfe61c33ee69542937de65c985a06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeckGameObject: {fileID: 1688285483}
-  startingHand: 3
-  handLimit: 10
+  StartingHand: 3
+  Limit: 10
+--- !u!114 &134031260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 134031257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb44239cf6a3e840ad0a46cb01b591f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NormalDeck: {fileID: 1688285483}
 --- !u!1 &282760670
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +342,7 @@ GameObject:
   - component: {fileID: 1688285485}
   - component: {fileID: 1688285484}
   m_Layer: 0
-  m_Name: Deck1
+  m_Name: NormalDeck1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
