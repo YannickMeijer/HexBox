@@ -7,8 +7,6 @@ public class Card : MonoBehaviour
     public const float HIGHLIGHT_MOVE_DURATION = 0.5f;
     public const float PLAY_MOVE_DURATION = 1.5f;
     private static readonly Vector3 HIGHLIGHT_POSITION = new Vector3(0, 0.5f, -0.2f);
-    
-    public string Description;
 
     private bool wasHighlighted;
 
@@ -17,11 +15,13 @@ public class Card : MonoBehaviour
     private SmoothMove smoothMove;
     protected HexagonTile currentHex;
     private MouseHelper mouseHelper;
+    private Tooltip tooltip;
 
     protected virtual void Start()
     {
         timer = GameObject.Find("GameController").GetComponent<TurnTimer>();
         smoothMove = GetComponent<SmoothMove>();
+        tooltip = GetComponent<Tooltip>();
 
         mouseHelper = GetComponent<MouseHelper>();
         mouseHelper.OnClick += () =>
@@ -35,6 +35,8 @@ public class Card : MonoBehaviour
     protected virtual void Update()
     {
         UpdateHighlight();
+
+        tooltip.enabled = Location == CardLocation.HAND || Location == CardLocation.FLOATING;
     }
 
     public void Play(HexagonTile tile)

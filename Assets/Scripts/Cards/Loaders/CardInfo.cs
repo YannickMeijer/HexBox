@@ -15,7 +15,10 @@ public abstract class CardInfo
     {
         Card card = gameObject.GetComponent<Card>();
         card.name = name;
-        card.Description = description;
+
+        Tooltip tooltip = gameObject.GetComponent<Tooltip>();
+        tooltip.TooltipName = name;
+        tooltip.Description = description;
     }
 
     public string Name
