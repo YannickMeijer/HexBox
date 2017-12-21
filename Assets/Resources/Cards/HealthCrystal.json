@@ -1,0 +1,7 @@
+﻿{
+    "name": "Health Crystal",
+    "description": "A large chunk of crystallized health.",
+    "type": 0,
+    "building": "Cube",
+    "health": 10
+}

@@ -19,8 +19,9 @@ public class Deck : MonoBehaviour
 
     private void Awake()
     {
+        CardLoader cardLoader = GameObject.Find("GameController").GetComponent<CardLoader>();
         for (int i = 0; i < 10; i++)
-            AddCard(Instantiate(CardPrefab));
+            AddCard(cardLoader.Load("HealthCrystal"));
     }
 
     /// <summary>
