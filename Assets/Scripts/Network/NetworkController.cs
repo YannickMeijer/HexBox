@@ -24,7 +24,7 @@ public class NetworkController : MonoBehaviour
     {
         NetworkError error = (NetworkError)errorByte;
         if (error != NetworkError.Ok)
-            Debug.Log("A network error occurred: " + error);
+            Debug.LogError("A network error occurred: " + error);
     }
 
     private void Start()
