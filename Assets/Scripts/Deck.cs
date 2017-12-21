@@ -52,10 +52,22 @@ public class Deck : MonoBehaviour
         // Set the card's parent and position.
         card.transform.SetParent(transform);
         card.transform.localPosition = Vector3.zero;
-        card.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        card.transform.localRotation = Quaternion.Euler(-90, 0, 0);
         card.GetComponent<Card>().Location = CardLocation.DECK;
 
         ADD_CARD_METHODS[position].Invoke(cards, card);
+        UpdateCardPositions();
+    }
+
+    private void UpdateCardPositions()
+    {
+        for (int i = 0; i < cards.Count; i++)
+        {
+            GameObject card = cards[i];
+            Vector3 pos = card.transform.localPosition;
+            pos.y = i * card.transform.lossyScale.z;
+            card.transform.localPosition = pos;
+        }
     }
 
     public enum CardAddPosition
