@@ -26,8 +26,7 @@ public class Socket
         // Add the channel, open the socket.
         channelId = config.AddChannel(qosType);
         Debug.Log("Created " + qosType + " channel, id: " + channelId);
-        HostTopology topology = new HostTopology(config, 2);
-        socketId = NetworkTransport.AddHost(topology, hostPort);
+        socketId = NetworkTransport.AddHost(new HostTopology(config, 1), hostPort);
         Debug.Log("Opened socket on port " + hostPort + ", id: " + socketId);
 
         // Connect.
