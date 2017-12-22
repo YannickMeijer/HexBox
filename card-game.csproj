@@ -299,6 +299,7 @@
     <Compile Include="Assets\Scripts\HexagonDirection.cs" />
     <Compile Include="Assets\Scripts\HexagonTile.cs" />
     <Compile Include="Assets\Scripts\Network\NetworkController.cs" />
+    <Compile Include="Assets\Scripts\Network\NetworkData.cs" />
     <Compile Include="Assets\Scripts\Network\Socket.cs" />
     <Compile Include="Assets\Scripts\Player\Deck.cs" />
     <Compile Include="Assets\Scripts\Player\Hand.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.Networking;
 
 public class NetworkController : MonoBehaviour
 {
-    private const int PORT = 8888;
+    private const int BUFFER_SIZE = 1024;
 
     public delegate void NetworkEventHandler();
     public event NetworkEventHandler OnConnected;
@@ -14,15 +15,15 @@ public class NetworkController : MonoBehaviour
     public event NetworkEventHandler OnConnectionFailed;
     public event NetworkEventHandler OnConnectionClosed;
 
-    public delegate void NetworkDataHandler(string data);
-    public event NetworkDataHandler OnData;
+    private Dictionary<Type, List<Action<NetworkData>>> dataHandlers = new Dictionary<Type, List<Action<NetworkData>>>();
 
     private Socket reliableSocket;
 
     public static void LogNetworkError(byte errorByte)
     {
         NetworkError error = (NetworkError)errorByte;
-        if (error != NetworkError.Ok)
+        // Check if the error is an ok, or message too long (which is handled).
+        if (error != NetworkError.Ok && error != NetworkError.MessageToLong)
             Debug.LogError("A network error occurred: " + error);
     }
 
@@ -40,7 +41,7 @@ public class NetworkController : MonoBehaviour
         OnConnectionFailed += () => Debug.Log("Could not connect.");
         OnConnectionClosed += () => Debug.Log("Connection closed.");
 
-        OnData += data => Debug.Log("Incoming data:\n" + data);
+        OnData<TextNetworkData>(Debug.Log);
     }
 
     private void Update()
@@ -48,12 +49,11 @@ public class NetworkController : MonoBehaviour
         int hostId;
         int connectionId;
         int channelId;
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
+        byte[] buffer = new byte[BUFFER_SIZE];
         int receivedSize;
         byte errorByte;
 
-        NetworkEventType networkEvent = NetworkTransport.Receive(out hostId, out connectionId, out channelId, buffer, bufferSize, out receivedSize, out errorByte);
+        NetworkEventType networkEvent = NetworkTransport.Receive(out hostId, out connectionId, out channelId, buffer, BUFFER_SIZE, out receivedSize, out errorByte);
         LogNetworkError(errorByte);
 
         switch (networkEvent)
@@ -73,10 +73,16 @@ public class NetworkController : MonoBehaviour
                     OnConnectionClosed();
                 break;
             case NetworkEventType.DataEvent:
+                // Check if the buffer was big enough, otherwise repeat the call.
+                if (((NetworkError)errorByte) == NetworkError.MessageToLong)
+                {
+                    buffer = new byte[receivedSize];
+                    NetworkTransport.Receive(out hostId, out connectionId, out channelId, buffer, receivedSize, out receivedSize, out errorByte);
+                    LogNetworkError(errorByte);
+                }
+
                 // Data!
-                string bufferString = Encoding.UTF8.GetString(buffer, 0, receivedSize);
-                if (OnData != null)
-                    OnData(bufferString);
+                HandleData(buffer, receivedSize);
                 break;
             case NetworkEventType.BroadcastEvent:
             case NetworkEventType.Nothing:
@@ -86,6 +92,46 @@ public class NetworkController : MonoBehaviour
                 Debug.LogError("Unknown message format received: " + networkEvent);
                 break;
         }
+    }
+
+    private void HandleData(byte[] data, int size)
+    {
+        string json = Encoding.UTF8.GetString(data, 0, size);
+        string typeName = JsonUtility.FromJson<NetworkData>(json).Type;
+
+        // Try to get the type of the object.
+        Type type = Type.GetType(typeName);
+        if (type == null)
+        {
+            Debug.Log("Invalid NetworkData object received:\n" + data);
+            return;
+        }
+
+        // Check if there are listeners for this type.
+        List<Action<NetworkData>> handlers;
+        if (dataHandlers.TryGetValue(type, out handlers))
+        {
+            // Decode the data, call the handlers.
+            NetworkData result = JsonUtility.FromJson(json, type) as NetworkData;
+            handlers.ForEach(handler => handler.Invoke(result));
+        }
+    }
+
+    /// <summary>
+    /// Hook into a network data event.
+    /// </summary>
+    /// <typeparam name="T">The type of network data to listen for.</typeparam>
+    /// <param name="handler">The event handler.</param>
+    public void OnData<T>(Action<T> handler) where T : NetworkData
+    {
+        Type type = typeof(T);
+
+        // Check if the type is already registered.
+        if (!dataHandlers.ContainsKey(type))
+            dataHandlers.Add(type, new List<Action<NetworkData>>());
+
+        // This cast is safe because it is checked when firing the events.
+        dataHandlers[type].Add(data => handler(data as T));
     }
 
     public Socket ReliableSocket

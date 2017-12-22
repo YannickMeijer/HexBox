@@ -38,10 +38,19 @@ public class Socket
     }
 
     /// <summary>
+    /// Send an object (JSON encoded) over this socket.
+    /// </summary>
+    /// <param name="data">The object to send.</param>
+    public void Send(NetworkData data)
+    {
+        Send(JsonUtility.ToJson(data));
+    }
+
+    /// <summary>
     /// Send data over this socket.
     /// </summary>
     /// <param name="data">The data to send.</param>
-    public void Send(string data)
+    private void Send(string data)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(data);
         byte errorByte;
