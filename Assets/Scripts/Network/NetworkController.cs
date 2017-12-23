@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -9,15 +10,13 @@ public class NetworkController : MonoBehaviour
 {
     private const int BUFFER_SIZE = 1024;
 
-    public delegate void NetworkEventHandler();
-    public event NetworkEventHandler OnConnected;
-    public event NetworkEventHandler OnIncomingConnection;
-    public event NetworkEventHandler OnConnectionFailed;
-    public event NetworkEventHandler OnConnectionClosed;
+    private readonly ConnectionConfig config = new ConnectionConfig();
 
-    private Dictionary<Type, List<Action<NetworkData>>> dataHandlers = new Dictionary<Type, List<Action<NetworkData>>>();
-
-    private Socket reliableSocket;
+    // SocketId to socket instance.
+    private Dictionary<int, HostSocket> sockets = new Dictionary<int, HostSocket>();
+    private HostSocket newSocket; // The next connecting socket.
+    private Action<HostSocket> newSocketCreated; // The callback for when the new socket is connected.
+    private Dictionary<Func<HostSocket>, Action<HostSocket>> socketCreationList = new Dictionary<Func<HostSocket>, Action<HostSocket>>(); // The sockets to be created.
 
     public static void LogNetworkError(byte errorByte)
     {
@@ -29,22 +28,41 @@ public class NetworkController : MonoBehaviour
 
     private void Start()
     {
-        // Initialize and configure the network.
         NetworkTransport.Init();
-        ConnectionConfig config = new ConnectionConfig();
+    }
 
-        reliableSocket = new Socket(config, QosType.Reliable, "127.0.0.1");
+    public void CreateHostSocket(QosType qosType, Action<HostSocket> callback)
+    {
+        socketCreationList.Add(() => new HostSocket(config, qosType), callback);
+    }
 
-        // Hook debug messages into the network events.
-        OnConnected += () => Debug.Log("Connected.");
-        OnIncomingConnection += () => Debug.Log("Incoming connection.");
-        OnConnectionFailed += () => Debug.Log("Could not connect.");
-        OnConnectionClosed += () => Debug.Log("Connection closed.");
-
-        OnData<TextNetworkData>(Debug.Log);
+    public ClientSocket CreateClientSocket(QosType qosType, string address)
+    {
+        ClientSocket socket = new ClientSocket(config, qosType, address);
+        sockets.Add(socket.ConnectionId, socket);
+        return socket;
     }
 
     private void Update()
+    {
+        CreateNewSocket();
+        ReceiveNetworkEvent();
+    }
+
+    private void CreateNewSocket()
+    {
+        // Check if the previous socket has connected and if there are more sockets to connect.
+        if (newSocket == null && socketCreationList.Count > 0)
+        {
+            // Get an item from the collection, resolve it.
+            KeyValuePair<Func<HostSocket>, Action<HostSocket>> entry = socketCreationList.First();
+            newSocket = entry.Key();
+            newSocketCreated = entry.Value;
+            socketCreationList.Remove(entry.Key);
+        }
+    }
+
+    private void ReceiveNetworkEvent()
     {
         int hostId;
         int connectionId;
@@ -56,21 +74,37 @@ public class NetworkController : MonoBehaviour
         NetworkEventType networkEvent = NetworkTransport.Receive(out hostId, out connectionId, out channelId, buffer, BUFFER_SIZE, out receivedSize, out errorByte);
         LogNetworkError(errorByte);
 
+        // Check if the connectionId corresponds with a client.
+        HostSocket connectedSocket;
+        sockets.TryGetValue(connectionId, out connectedSocket);
+
         switch (networkEvent)
         {
             case NetworkEventType.ConnectEvent:
-                // New connection, either incoming or outgoing.
-                if (reliableSocket.ConnectionId == connectionId)
-                    FireEvent(OnConnected);
+                // New connection, check if it is incoming or outgoing.
+                if (connectedSocket != null)
+                    connectedSocket.FireOnConnected();
                 else
-                    FireEvent(OnIncomingConnection);
+                {
+                    FireSocketCreated();
+                    newSocket.FireOnIncomingConnection(connectionId);
+                    sockets.Add(newSocket.ConnectionId, newSocket);
+                    newSocket = null;
+                }
                 break;
             case NetworkEventType.DisconnectEvent:
                 // Disconnected.
-                if (reliableSocket.ConnectionId == connectionId)
-                    FireEvent(OnConnectionFailed);
+                if (connectedSocket != null)
+                {
+                    connectedSocket.FireOnConnectionFailed();
+                    sockets.Remove(connectionId);
+                }
                 else
-                    FireEvent(OnConnectionClosed);
+                {
+                    FireSocketCreated();
+                    newSocket.FireOnDisconnected();
+                    newSocket = null;
+                }
                 break;
             case NetworkEventType.DataEvent:
                 // Check if the buffer was big enough, otherwise repeat the call.
@@ -82,7 +116,7 @@ public class NetworkController : MonoBehaviour
                 }
 
                 // Data!
-                HandleData(buffer, receivedSize);
+                connectedSocket.HandleData(buffer, receivedSize);
                 break;
             case NetworkEventType.BroadcastEvent:
             case NetworkEventType.Nothing:
@@ -94,54 +128,9 @@ public class NetworkController : MonoBehaviour
         }
     }
 
-    private void FireEvent(NetworkEventHandler networkEvent)
+    private void FireSocketCreated()
     {
-        if (networkEvent != null)
-            networkEvent();
-    }
-
-    private void HandleData(byte[] data, int size)
-    {
-        string json = Encoding.UTF8.GetString(data, 0, size);
-        string typeName = JsonUtility.FromJson<NetworkData>(json).Type;
-
-        // Try to get the type of the object.
-        Type type = Type.GetType(typeName);
-        if (type == null)
-        {
-            Debug.Log("Invalid NetworkData object received:\n" + data);
-            return;
-        }
-
-        // Check if there are listeners for this type.
-        List<Action<NetworkData>> handlers;
-        if (dataHandlers.TryGetValue(type, out handlers))
-        {
-            // Decode the data, call the handlers.
-            NetworkData result = JsonUtility.FromJson(json, type) as NetworkData;
-            handlers.ForEach(handler => handler.Invoke(result));
-        }
-    }
-
-    /// <summary>
-    /// Hook into a network data event.
-    /// </summary>
-    /// <typeparam name="T">The type of network data to listen for.</typeparam>
-    /// <param name="handler">The event handler.</param>
-    public void OnData<T>(Action<T> handler) where T : NetworkData
-    {
-        Type type = typeof(T);
-
-        // Check if the type is already registered.
-        if (!dataHandlers.ContainsKey(type))
-            dataHandlers.Add(type, new List<Action<NetworkData>>());
-
-        // This cast is safe because it is checked when firing the events.
-        dataHandlers[type].Add(data => handler(data as T));
-    }
-
-    public Socket ReliableSocket
-    {
-        get { return reliableSocket; }
+        if (newSocketCreated != null)
+            newSocketCreated(newSocket);
     }
 }
