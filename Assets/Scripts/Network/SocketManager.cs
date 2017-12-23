@@ -6,17 +6,17 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class NetworkController : MonoBehaviour
+public class SocketManager : MonoBehaviour
 {
     private const int BUFFER_SIZE = 1024;
 
     private readonly ConnectionConfig config = new ConnectionConfig();
 
     // SocketId to socket instance.
-    private Dictionary<int, HostSocket> sockets = new Dictionary<int, HostSocket>();
-    private HostSocket newSocket; // The next connecting socket.
-    private Action<HostSocket> newSocketCreated; // The callback for when the new socket is connected.
-    private Dictionary<Func<HostSocket>, Action<HostSocket>> socketCreationList = new Dictionary<Func<HostSocket>, Action<HostSocket>>(); // The sockets to be created.
+    private Dictionary<int, Socket> sockets = new Dictionary<int, Socket>();
+    private Socket newSocket; // The next connecting socket.
+    private Action<Socket> newSocketCreated; // The callback for when the new socket is connected.
+    private Dictionary<Func<Socket>, Action<Socket>> socketCreationList = new Dictionary<Func<Socket>, Action<Socket>>(); // The sockets to be created.
 
     public static void LogNetworkError(byte errorByte)
     {
@@ -31,9 +31,9 @@ public class NetworkController : MonoBehaviour
         NetworkTransport.Init();
     }
 
-    public void CreateHostSocket(QosType qosType, Action<HostSocket> callback)
+    public void CreateHostSocket(QosType qosType, Action<Socket> callback)
     {
-        socketCreationList.Add(() => new HostSocket(config, qosType), callback);
+        socketCreationList.Add(() => new Socket(config, qosType), callback);
     }
 
     public ClientSocket CreateClientSocket(QosType qosType, string address)
@@ -55,7 +55,7 @@ public class NetworkController : MonoBehaviour
         if (newSocket == null && socketCreationList.Count > 0)
         {
             // Get an item from the collection, resolve it.
-            KeyValuePair<Func<HostSocket>, Action<HostSocket>> entry = socketCreationList.First();
+            KeyValuePair<Func<Socket>, Action<Socket>> entry = socketCreationList.First();
             newSocket = entry.Key();
             newSocketCreated = entry.Value;
             socketCreationList.Remove(entry.Key);
@@ -75,7 +75,7 @@ public class NetworkController : MonoBehaviour
         LogNetworkError(errorByte);
 
         // Check if the connectionId corresponds with a client.
-        HostSocket connectedSocket;
+        Socket connectedSocket;
         sockets.TryGetValue(connectionId, out connectedSocket);
 
         switch (networkEvent)

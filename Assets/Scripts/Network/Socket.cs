@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class HostSocket
+public class Socket
 {
     public delegate void NetworkConnectedEventHandler(int connectionId);
     public event NetworkConnectedEventHandler OnIncomingConnection;
@@ -23,7 +23,7 @@ public class HostSocket
     // Network data event handlers.
     private Dictionary<Type, List<Action<NetworkData>>> dataHandlers = new Dictionary<Type, List<Action<NetworkData>>>();
 
-    public HostSocket(ConnectionConfig config, QosType qosType)
+    public Socket(ConnectionConfig config, QosType qosType)
     {
         // TODO: temporary code to be able to test 2 instances on 1 machine.
         // Need to figure out something so this works both local and remote.
@@ -61,7 +61,7 @@ public class HostSocket
     {
         byte errorByte;
         NetworkTransport.Disconnect(socketId, connectionId, out errorByte);
-        NetworkController.LogNetworkError(errorByte);
+        SocketManager.LogNetworkError(errorByte);
         FireEvent(OnDisconnected);
         connected = false;
     }
@@ -129,7 +129,7 @@ public class HostSocket
         byte[] bytes = Encoding.UTF8.GetBytes(data);
         byte errorByte;
         NetworkTransport.Send(socketId, connectionId, channelId, bytes, bytes.Length, out errorByte);
-        NetworkController.LogNetworkError(errorByte);
+        SocketManager.LogNetworkError(errorByte);
     }
 
     public void FireOnConnected()

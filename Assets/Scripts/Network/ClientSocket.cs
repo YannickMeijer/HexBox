@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ClientSocket : HostSocket
+public class ClientSocket : Socket
 {
     public ClientSocket(ConnectionConfig config, QosType qosType, string address) : base(config, qosType)
     {
@@ -20,6 +20,6 @@ public class ClientSocket : HostSocket
         byte errorByte;
         connectionId = NetworkTransport.Connect(socketId, address, connectPort, 0, out errorByte);
         Debug.Log("Connecting to " + address + ":" + connectPort + ", id: " + connectionId);
-        NetworkController.LogNetworkError(errorByte);
+        SocketManager.LogNetworkError(errorByte);
     }
 }
