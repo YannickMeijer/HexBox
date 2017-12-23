@@ -11,6 +11,10 @@ public abstract class CardInfo
     [SerializeField]
     private string description;
 
+    /// <summary>
+    /// Apply this card to a game object.
+    /// </summary>
+    /// <param name="gameObject">The game object to apply to.</param>
     public virtual void Apply(GameObject gameObject)
     {
         Card card = gameObject.GetComponent<Card>();
@@ -19,15 +23,5 @@ public abstract class CardInfo
         Tooltip tooltip = gameObject.GetComponent<Tooltip>();
         tooltip.TooltipName = name;
         tooltip.Description = description;
-    }
-
-    public string Name
-    {
-        get { return name; }
-    }
-
-    public string Description
-    {
-        get { return description; }
     }
 }

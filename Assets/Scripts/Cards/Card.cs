@@ -39,6 +39,10 @@ public class Card : MonoBehaviour
         tooltip.enabled = Location == CardLocation.HAND || Location == CardLocation.FLOATING;
     }
 
+    /// <summary>
+    /// Play this card.
+    /// </summary>
+    /// <param name="tile">The tile to play this card on.</param>
     public void Play(HexagonTile tile)
     {
         currentHex = tile;
@@ -47,12 +51,16 @@ public class Card : MonoBehaviour
         transform.SetParent(null);
 
         // Move the card to the tile.
-        smoothMove.Position.MoveToAbsolute(tile.transform.position + Vector3.up * 0.2f, PLAY_MOVE_DURATION);
+        smoothMove.Position.MoveToGlobal(tile.transform.position + Vector3.up * 0.2f, PLAY_MOVE_DURATION);
         smoothMove.Rotation.RotateTo(tile.transform.rotation, PLAY_MOVE_DURATION);
 
         smoothMove.Position.DoneOnce += card => Played(tile);
     }
 
+    /// <summary>
+    /// Set the hand this card belongs to.
+    /// </summary>
+    /// <param name="hand">The owner hand.</param>
     public void SetHand(Hand hand)
     {
         Location = CardLocation.HAND;

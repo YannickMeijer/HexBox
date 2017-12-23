@@ -61,16 +61,16 @@ public class NetworkController : MonoBehaviour
             case NetworkEventType.ConnectEvent:
                 // New connection, either incoming or outgoing.
                 if (reliableSocket.ConnectionId == connectionId)
-                    OnConnected();
+                    FireEvent(OnConnected);
                 else
-                    OnIncomingConnection();
+                    FireEvent(OnIncomingConnection);
                 break;
             case NetworkEventType.DisconnectEvent:
                 // Disconnected.
                 if (reliableSocket.ConnectionId == connectionId)
-                    OnConnectionFailed();
+                    FireEvent(OnConnectionFailed);
                 else
-                    OnConnectionClosed();
+                    FireEvent(OnConnectionClosed);
                 break;
             case NetworkEventType.DataEvent:
                 // Check if the buffer was big enough, otherwise repeat the call.
@@ -92,6 +92,12 @@ public class NetworkController : MonoBehaviour
                 Debug.LogError("Unknown message format received: " + networkEvent);
                 break;
         }
+    }
+
+    private void FireEvent(NetworkEventHandler networkEvent)
+    {
+        if (networkEvent != null)
+            networkEvent();
     }
 
     private void HandleData(byte[] data, int size)

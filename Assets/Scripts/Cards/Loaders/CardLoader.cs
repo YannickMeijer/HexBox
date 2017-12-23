@@ -13,6 +13,11 @@ public class CardLoader : MonoBehaviour
 
     public GameObject CardPrefab;
 
+    /// <summary>
+    /// Load a card from a resource.
+    /// </summary>
+    /// <param name="name">The name of the resource to load.</param>
+    /// <returns></returns>
     public GameObject Load(string name)
     {
         // Load the json, get the card type.
@@ -31,6 +36,9 @@ public class CardLoader : MonoBehaviour
         BUILDING = 0
     }
 
+    /// <summary>
+    /// A class used to identify the type of card when deserializing card data.
+    /// </summary>
     [Serializable]
     private class CardTypeInfo
     {

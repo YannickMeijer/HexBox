@@ -79,6 +79,12 @@ public class SmoothMove : MonoBehaviour
             }
         }
 
+        /// <summary>
+        /// Initialize movement.
+        /// </summary>
+        /// <param name="start">The starting position.</param>
+        /// <param name="target">The target position.</param>
+        /// <param name="duration">The duration of the movement.</param>
         protected void Initialize(T start, T target, float duration)
         {
             this.start = start;
@@ -89,6 +95,10 @@ public class SmoothMove : MonoBehaviour
             timeTaken = 0;
         }
 
+        /// <summary>
+        /// Update the movement of the object.
+        /// </summary>
+        /// <param name="lerpFactor">A smoothened factor which can be used to linearly interpolate between the start and target.</param>
         protected abstract void DoUpdate(float lerpFactor);
 
         public T Target
@@ -106,17 +116,33 @@ public class SmoothMove : MonoBehaviour
             parent.transform.localPosition = Vector3.Lerp(start, target, lerpFactor);
         }
 
+        /// <summary>
+        /// Move to an absolute local position.
+        /// </summary>
+        /// <param name="position">The position to move to.</param>
+        /// <param name="duration">The duration of the movement.</param>
         public void MoveTo(Vector3 position, float duration)
         {
             Initialize(parent.transform.localPosition, position, duration);
         }
 
-        public void MoveToAbsolute(Vector3 position, float duration)
+        /// <summary>
+        /// Move to an absolute global position.
+        /// </summary>
+        /// <param name="position">The position to move to.</param>
+        /// <param name="duration">The duration of the movement.</param>
+        public void MoveToGlobal(Vector3 position, float duration)
         {
             Vector3 local = position - (parent.transform.localPosition - parent.transform.position);
             MoveTo(local, duration);
         }
 
+        /// <summary>
+        /// Move relative to the current position.
+        /// If the object is still moving, the movement will be calculated relative to the current target position.
+        /// </summary>
+        /// <param name="change">The change in position.</param>
+        /// <param name="duration">The duration of the movement.</param>
         public void MoveRelative(Vector3 change, float duration)
         {
             Vector3 from = parent.transform.localPosition;
@@ -143,6 +169,11 @@ public class SmoothMove : MonoBehaviour
             parent.transform.localRotation = Quaternion.Lerp(start, target, lerpFactor);
         }
 
+        /// <summary>
+        /// Rotate to an absolute local rotation.
+        /// </summary>
+        /// <param name="rotation">The rotation to rotate to.</param>
+        /// <param name="duration">The duration of the rotation.</param>
         public void RotateTo(Quaternion rotation, float duration)
         {
             Initialize(parent.transform.localRotation, rotation, duration);
