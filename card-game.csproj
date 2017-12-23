@@ -309,6 +309,7 @@
     <Compile Include="Assets\Scripts\SmoothMove.cs" />
     <Compile Include="Assets\Scripts\Tooltip.cs" />
     <Compile Include="Assets\Scripts\TurnTimer.cs" />
+    <Compile Include="Assets\Scripts\UI\ChildSpacer.cs" />
     <Compile Include="Assets\Scripts\Units\DamageType.cs" />
     <Compile Include="Assets\Scripts\Units\Unit.cs" />
   </ItemGroup>
