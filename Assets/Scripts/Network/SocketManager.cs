@@ -96,7 +96,7 @@ public class SocketManager : MonoBehaviour
                 // Disconnected.
                 if (connectedSocket != null)
                 {
-                    connectedSocket.FireOnConnectionFailed();
+                    connectedSocket.FireOnDisconnected();
                     sockets.Remove(connectionId);
                 }
                 else
@@ -132,5 +132,15 @@ public class SocketManager : MonoBehaviour
     {
         if (newSocketCreated != null)
             newSocketCreated(newSocket);
+    }
+
+    private void OnApplicationQuit()
+    {
+        // Disconnect all sockets.
+        foreach (Socket socket in sockets.Values)
+        {
+            socket.Disconnect();
+            sockets.Clear();
+        }
     }
 }

@@ -9,6 +9,6 @@ public class ClientPlayer : MonoBehaviour
 
     private void Start()
     {
-        socket = GameObject.Find("GameController").GetComponent<SocketManager>().CreateClientSocket(QosType.ReliableSequenced, "127.0.0.1");
+        socket = GameObject.Find("Network").GetComponent<SocketManager>().CreateClientSocket(QosType.ReliableSequenced, "127.0.0.1");
     }
 }

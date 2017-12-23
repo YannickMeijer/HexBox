@@ -12,7 +12,6 @@ public class Socket
 
     public delegate void NetworkEventHandler();
     public event NetworkEventHandler OnConnected;
-    public event NetworkEventHandler OnConnectionFailed;
     public event NetworkEventHandler OnDisconnected;
 
     protected readonly int channelId;
@@ -42,16 +41,11 @@ public class Socket
 
         // Hook debug messages into the network events.
         OnConnected += () => Debug.Log("Connected.");
-        OnConnectionFailed += () => Debug.Log("Could not connect.");
+        OnDisconnected += () => Debug.Log("Disconnected.");
         OnData<TextNetworkData>(Debug.Log);
 
         // Hook into the incoming connection event.
-        OnIncomingConnection += connectionId =>
-        {
-            Debug.Log("Incoming connection.");
-            this.connectionId = connectionId;
-            connected = true;
-        };
+        OnIncomingConnection += connectionId => this.connectionId = connectionId;
     }
 
     /// <summary>
@@ -135,6 +129,7 @@ public class Socket
     public void FireOnConnected()
     {
         FireEvent(OnConnected);
+        connected = true;
     }
 
     public void FireOnIncomingConnection(int connectionId)
@@ -143,11 +138,7 @@ public class Socket
         OnIncomingConnection(connectionId);
         // Also fire the Connected event.
         FireEvent(OnConnected);
-    }
-
-    public void FireOnConnectionFailed()
-    {
-        FireEvent(OnConnectionFailed);
+        connected = true;
     }
 
     public void FireOnDisconnected()

@@ -10,6 +10,6 @@ public class HostPlayer : MonoBehaviour
 
     private void Start()
     {
-        GameObject.Find("GameController").GetComponent<SocketManager>().CreateHostSocket(QosType.ReliableSequenced, newSocket => socket = newSocket);
+        GameObject.Find("Network").GetComponent<SocketManager>().CreateHostSocket(QosType.ReliableSequenced, newSocket => socket = newSocket);
     }
 }
