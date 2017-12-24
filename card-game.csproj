@@ -292,11 +292,16 @@
     <Compile Include="Assets\Scripts\Helpers\MouseHelper.cs" />
     <Compile Include="Assets\Scripts\HexagonDirection.cs" />
     <Compile Include="Assets\Scripts\HexagonTile.cs" />
-    <Compile Include="Assets\Scripts\Network\NetworkController.cs" />
+    <Compile Include="Assets\Scripts\Network\ClientSocket.cs" />
+    <Compile Include="Assets\Scripts\Network\Network.cs" />
     <Compile Include="Assets\Scripts\Network\NetworkData.cs" />
     <Compile Include="Assets\Scripts\Network\Socket.cs" />
+    <Compile Include="Assets\Scripts\Network\SocketManager.cs" />
+    <Compile Include="Assets\Scripts\Player\ClientPlayer.cs" />
     <Compile Include="Assets\Scripts\Player\Deck.cs" />
     <Compile Include="Assets\Scripts\Player\Hand.cs" />
+    <Compile Include="Assets\Scripts\Player\HostPlayer.cs" />
+    <Compile Include="Assets\Scripts\Player\NetworkPlayer.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\PlayingFieldController.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
@@ -304,10 +309,10 @@
     <Compile Include="Assets\Scripts\Tooltip.cs" />
     <Compile Include="Assets\Scripts\TurnTimer.cs" />
     <Compile Include="Assets\Scripts\UI\ChildSpacer.cs" />
-    <Compile Include="Assets\Scripts\UI\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Units\DamageType.cs" />
     <Compile Include="Assets\Scripts\Units\PathFinding.cs" />
     <Compile Include="Assets\Scripts\Units\Unit.cs" />
+    <Compile Include="Assets\Scripts\Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
