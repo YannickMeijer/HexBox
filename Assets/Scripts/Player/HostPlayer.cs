@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class HostPlayer : MonoBehaviour
+public class HostPlayer : NetworkPlayer
 {
     // TODO: support multiple clients by having a dedicated socket for assigning port numbers.
-    private Socket socket;
 
-    private void Start()
+    protected override void Start()
     {
-        GameObject.Find("Network").GetComponent<SocketManager>().CreateHostSocket(QosType.ReliableSequenced, newSocket => socket = newSocket);
+        base.Start();
+        socketManager.CreateHostSocket(QosType.ReliableSequenced, newSocket => socket = newSocket);
     }
 }

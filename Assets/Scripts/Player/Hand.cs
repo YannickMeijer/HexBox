@@ -9,14 +9,14 @@ public class Hand : MonoBehaviour
     public int StartingHand = 3;
     public int Limit = 10;
 
-    private SocketManager network;
+    private NetworkPlayer network;
 
     private float frustumWidth;
     private List<GameObject> cards = new List<GameObject>();
 
     private void Start()
     {
-        network = GameObject.Find("GameController").GetComponent<SocketManager>();
+        network = GameObject.Find("Network").GetComponent<NetworkPlayer>();
         SetHandPosition();
     }
 
@@ -45,6 +45,8 @@ public class Hand : MonoBehaviour
             cards.Remove(selectedCard);
             selectedCard.GetComponent<Card>().Play(tile);
             UpdateCardPositions(Card.HIGHLIGHT_MOVE_DURATION);
+
+            network.Send("Playing card: " + selectedCard.name);
         }
     }
 

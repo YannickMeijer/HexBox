@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ClientPlayer : MonoBehaviour
+public class ClientPlayer : NetworkPlayer
 {
-    private Socket socket;
-
-    private void Start()
+    protected override void Start()
     {
-        socket = GameObject.Find("Network").GetComponent<SocketManager>().CreateClientSocket(QosType.ReliableSequenced, "127.0.0.1");
+        base.Start();
+        socket = socketManager.CreateClientSocket(QosType.ReliableSequenced, "127.0.0.1");
     }
 }

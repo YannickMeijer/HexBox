@@ -307,6 +307,7 @@
     <Compile Include="Assets\Scripts\Player\Deck.cs" />
     <Compile Include="Assets\Scripts\Player\Hand.cs" />
     <Compile Include="Assets\Scripts\Player\HostPlayer.cs" />
+    <Compile Include="Assets\Scripts\Player\NetworkPlayer.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\PlayingFieldController.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
