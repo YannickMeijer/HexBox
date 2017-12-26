@@ -15,7 +15,7 @@ public class HostPlayer : NetworkPlayer
         base.Start();
 
         // For the host the id is always 0.
-        id = 0;
+        playerData = new PlayerData(0, "Host Player");
 
         socketManager.CreateHostSocket(QosType.ReliableSequenced, PlayerConnected);
     }
@@ -24,10 +24,14 @@ public class HostPlayer : NetworkPlayer
     {
         this.socket = socket;
 
-        // Initialize the player.
-        socket.OnConnected += () =>
+        // When a new player sends their data, return their id.
+        socket.OnData<PlayerData>(data =>
         {
-            socket.Send(new PlayerInitData(Interlocked.Increment(ref currentPlayerId)));
-        };
+            int newId = Interlocked.Increment(ref currentPlayerId);
+            socket.Send(new PlayerId(newId));
+
+            data.Id = newId;
+            players.Add(data);
+        });
     }
 }

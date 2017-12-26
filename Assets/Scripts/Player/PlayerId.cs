@@ -1,13 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerInitData : NetworkData
+[Serializable]
+public class PlayerId : NetworkData
 {
     [SerializeField]
     private int id;
 
-    public PlayerInitData(int id)
+    public PlayerId(int id)
     {
         this.id = id;
     }

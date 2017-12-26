@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class NetworkPlayer : MonoBehaviour
 {
-    protected int id = -1;
-
     protected SocketManager socketManager;
     protected Socket socket;
+
+    protected PlayerData playerData;
+    protected List<PlayerData> players = new List<PlayerData>();
 
     protected virtual void Start()
     {
@@ -16,11 +17,11 @@ public class NetworkPlayer : MonoBehaviour
 
     public void Send(string text)
     {
-        socket.Send(new TextNetworkData("From player " + id + ":\n" + text));
+        socket.Send(new TextNetworkData("From player " + playerData.Id + ":\n" + text));
     }
 
-    public int Id
+    public PlayerData PlayerData
     {
-        get { return id; }
+        get { return playerData; }
     }
 }
