@@ -7,31 +7,32 @@ using UnityEngine;
 public class PathFinding : MonoBehaviour {
 
     PlayingFieldController controller;
+
+    //all nodes still unchecked for the path
     List<Node> open;
+    //Key is the child, value is the parent. Used to find the path from the end to the start
     Dictionary<Point, Point> previousNode;
+    //contains all nodes already checked.
     HashSet<Point> closed;
+    //A list containing every value of the HexagonDirection Enum for easy iteration
     HexagonDirection[] directions;
 
-	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         directions = (HexagonDirection[])Enum.GetValues(typeof(HexagonDirection));
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
+    //Runs A*, parameters speak for themselves. Start should be the point the unit is on.
     public List<Point> FindPath(Point start, Point goal)
     {
         resetStructures();
-        int heuristicCost = costFunction(start, goal);
-        Node startNode = new Node(start, 0, heuristicCost);
+        int heuristicCost = Heuristic(start, goal);
+        Node startNode = new Node(start, 0, heuristicCost, 0);
 
         open.Add(startNode);
 
         bool pathfound = false;
-
+        //Take the current node, find its neighbours and add them to relevant list with costs calculated.
         while (!pathfound)
         {
             Node currentNode = open[open.Count - 1];
@@ -46,19 +47,28 @@ public class PathFinding : MonoBehaviour {
                     continue;
 
                 previousNode.Add(futureNode, currentNode.thisNode);
-                heuristicCost = costFunction(futureNode, goal);
-                Node addNode = new Node(futureNode, currentNode.fromStart + 1, heuristicCost);
+                heuristicCost = Heuristic(futureNode, goal);
+                int additionalCost = currentNode.additionalCost + AdditionalCostFunction(futureNode);
+                Node addNode = new Node(futureNode, currentNode.fromStart + 1, heuristicCost, 0);
                 open.Add(addNode);
                 if (futureNode == goal)
                     pathfound = true;
             }
             open.OrderByDescending(a => a.totalCost);
+            if (open.Count == 0)
+                return null;
         }
 
+        return UnwindPath(goal, start);
+    }
+
+    //Starts from the goal and finds its way back to the start point, then reverses the list so the first move is at 0
+    List<Point> UnwindPath(Point goal, Point start)
+    {
         List<Point> returnList = new List<Point>();
-        bool pathUnwound = false;
         returnList.Add(goal);
 
+        bool pathUnwound = false;
         while (!pathUnwound)
         {
             if (returnList[returnList.Count - 1] == start)
@@ -66,12 +76,14 @@ public class PathFinding : MonoBehaviour {
                 pathUnwound = true;
                 continue;
             }
-                returnList.Add(previousNode[returnList[returnList.Count - 1]]);
+            returnList.Add(previousNode[returnList[returnList.Count - 1]]);
         }
-            return returnList;
+        returnList.Reverse();
+        return returnList;
     }
 
-    public int costFunction(Point currentHex, Point goalHex)
+    //The heuristic for hexagons
+    public int Heuristic(Point currentHex, Point goalHex)
     {
         float difX = Mathf.Abs(goalHex.X - currentHex.X);
         float difY = Mathf.Abs(goalHex.Y - currentHex.Y);
@@ -82,6 +94,13 @@ public class PathFinding : MonoBehaviour {
         return (int)(difX + difY - difX / 2);
     }
 
+    //The cost function for additional stuff, like not wanting to move through lava
+    public int AdditionalCostFunction(Point costIncurred)
+    {
+        return 0;
+    }
+
+    //resets everything so a new call can be done with a clean slate
     public void resetStructures()
     {
         open.Clear();
@@ -89,18 +108,21 @@ public class PathFinding : MonoBehaviour {
         previousNode.Clear();
     }
 
+    // A node containing everything needed for pathfinding
     public struct Node {
         public Point thisNode;
         public int fromStart;
         public int tillFinish;
+        public int additionalCost;
         public int totalCost;
 
-        public Node(Point location, int costSoFar, int costTillFinish)
+        public Node(Point location, int costSoFar, int costTillFinish, int additional)
         {
             thisNode   = location;
             fromStart  = costSoFar;
             tillFinish = costTillFinish;
-            totalCost  = fromStart + tillFinish;
+            additionalCost = additional;
+            totalCost = fromStart + tillFinish + additionalCost;
         }
             
     }
