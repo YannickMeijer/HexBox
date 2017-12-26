@@ -7,7 +7,7 @@ public class Network : MonoBehaviour
 {
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(transform.gameObject);
     }
 
     public void HostLobby()

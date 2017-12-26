@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NetworkPlayer : MonoBehaviour
 {
+    protected int id = -1;
+
     protected SocketManager socketManager;
     protected Socket socket;
 
@@ -14,6 +16,11 @@ public class NetworkPlayer : MonoBehaviour
 
     public void Send(string text)
     {
-        socket.Send(new TextNetworkData(text));
+        socket.Send(new TextNetworkData("From player " + id + ":\n" + text));
+    }
+
+    public int Id
+    {
+        get { return id; }
     }
 }

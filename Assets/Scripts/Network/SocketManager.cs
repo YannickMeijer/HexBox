@@ -26,6 +26,11 @@ public class SocketManager : MonoBehaviour
             Debug.LogError("A network error occurred: " + error);
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     private void Start()
     {
         NetworkTransport.Init();
@@ -88,7 +93,7 @@ public class SocketManager : MonoBehaviour
                 {
                     FireSocketCreated();
                     newSocket.FireOnIncomingConnection(connectionId);
-                    sockets.Add(newSocket.ConnectionId, newSocket);
+                    sockets.Add(connectionId, newSocket);
                     newSocket = null;
                 }
                 break;
@@ -101,6 +106,7 @@ public class SocketManager : MonoBehaviour
                 }
                 else
                 {
+                    // Create and immediately disconnect the socket.
                     FireSocketCreated();
                     newSocket.FireOnDisconnected();
                     newSocket = null;
@@ -134,8 +140,9 @@ public class SocketManager : MonoBehaviour
             newSocketCreated(newSocket);
     }
 
-    private void OnApplicationQuit()
+    private void OnDestroy()
     {
+        Debug.Log("SocketManager destroyed, closing all sockets.");
         // Disconnect all sockets.
         foreach (Socket socket in sockets.Values)
         {

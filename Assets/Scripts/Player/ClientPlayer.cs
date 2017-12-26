@@ -9,5 +9,12 @@ public class ClientPlayer : NetworkPlayer
     {
         base.Start();
         socket = socketManager.CreateClientSocket(QosType.ReliableSequenced, "127.0.0.1");
+
+        // Hook into the initialization data.
+        socket.OnData<PlayerInitData>(data =>
+        {
+            id = data.Id;
+            Debug.Log("Initialized player, id: " + id);
+        });
     }
 }
