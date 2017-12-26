@@ -33,6 +33,7 @@ public class SocketManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("Starting SocketManager in '" + gameObject.name + "' game object.");
         NetworkTransport.Init();
     }
 
