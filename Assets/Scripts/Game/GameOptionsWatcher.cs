@@ -17,7 +17,12 @@ public class GameOptionsWatcher : MonoBehaviour
         host = network.GetComponent<HostPlayer>();
         ClientPlayer client = network.GetComponent<ClientPlayer>();
         if (client != null)
+        {
             client.GameOptionsChanged += ApplyOptions;
+
+            // Disable all interactive elements.
+            PlayerCountSlider.interactable = false;
+        }
 
         // Hook into all events.
         PlayerCountSlider.onValueChanged.AddListener(value =>
