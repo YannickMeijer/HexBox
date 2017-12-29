@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -28,11 +29,21 @@ public class HostPlayer : NetworkPlayer
         // When a new player sends their data, return their id.
         socket.OnData<PlayerData>(data =>
         {
+            // Get the id for the player.
             int newId = Interlocked.Increment(ref currentPlayerId);
             socket.Send(new PlayerIdNetworkData(newId));
-
             data.Id = newId;
+
+            // Send all players' data to the new player, add the player to the list of players.
+            socket.Send(new PlayerNetworkEventData(playerData, PlayerNetworkEvent.CONNECTED));
+            players.ForEach(player => socket.Send(new PlayerNetworkEventData(player, PlayerNetworkEvent.CONNECTED)));
             players.Add(data);
+
+            // Fire the player connected event.
+            FireOnPlayerConnected(data);
+
+            // Hook into the disconnect event.
+            socket.OnDisconnected += () => FireOnPlayerDisconnected(data);
         });
     }
 

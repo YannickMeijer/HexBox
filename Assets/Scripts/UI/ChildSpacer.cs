@@ -6,7 +6,7 @@ public class ChildSpacer : MonoBehaviour
 {
     public float Margin;
 
-    private void Start()
+    private void Update()
     {
         float y = GetComponent<RectTransform>().rect.yMax;
         foreach (Transform child in transform)

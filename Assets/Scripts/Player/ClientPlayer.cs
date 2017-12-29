@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -21,6 +22,8 @@ public class ClientPlayer : NetworkPlayer
             playerData.Id = data.PlayerId;
             Debug.Log("Initialized player, id: " + playerData.Id);
         });
+
+        socket.OnData<PlayerNetworkEventData>(HandlerPlayerNetworkEvent);
     }
 
     public override void Send(NetworkData data)
@@ -39,5 +42,22 @@ public class ClientPlayer : NetworkPlayer
             gameOptions = newOptions;
             optionsContainer.ApplyOptions(newOptions);
         });
+    }
+
+    private void HandlerPlayerNetworkEvent(PlayerNetworkEventData data)
+    {
+        // Fire the right event based on the event type.
+        switch (data.EventType)
+        {
+            case PlayerNetworkEvent.CONNECTED:
+                FireOnPlayerConnected(data.PlayerData);
+                break;
+            case PlayerNetworkEvent.DISCONNECTED:
+                FireOnPlayerDisconnected(data.PlayerData);
+                break;
+            default:
+                Debug.Log("Unknown player network event type: " + data.EventType);
+                break;
+        }
     }
 }

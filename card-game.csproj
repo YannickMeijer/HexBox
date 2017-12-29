@@ -300,9 +300,11 @@
     <Compile Include="Assets\Scripts\HexagonDirection.cs" />
     <Compile Include="Assets\Scripts\HexagonTile.cs" />
     <Compile Include="Assets\Scripts\Lobby\GameOptionsUiContainer.cs" />
+    <Compile Include="Assets\Scripts\Lobby\PlayerListController.cs" />
     <Compile Include="Assets\Scripts\Network\ClientSocket.cs" />
+    <Compile Include="Assets\Scripts\Network\Data\NetworkData.cs" />
+    <Compile Include="Assets\Scripts\Network\Data\PlayerNetworkEventData.cs" />
     <Compile Include="Assets\Scripts\Network\Network.cs" />
-    <Compile Include="Assets\Scripts\Network\NetworkData.cs" />
     <Compile Include="Assets\Scripts\Network\Socket.cs" />
     <Compile Include="Assets\Scripts\Network\SocketManager.cs" />
     <Compile Include="Assets\Scripts\Player\ClientPlayer.cs" />
