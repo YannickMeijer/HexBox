@@ -7,4 +7,5 @@ using UnityEngine;
 public class GameOptions : NetworkData
 {
     public int PlayerCount = 2;
+    public int PlayingFieldSize = 10;
 }

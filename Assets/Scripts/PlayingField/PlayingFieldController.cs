@@ -16,14 +16,12 @@ public class PlayingFieldController : MonoBehaviour
     // Columns, then rows.
     private readonly Dictionary<Point, GameObject> tiles = new Dictionary<Point, GameObject>();
 
+    private IPlayingFieldGenerator playingFieldGenerator = new SquarePlayingFieldGenerator();
+
     public void Start()
     {
         tilesContainer = gameObject.transform.Find("Tiles").gameObject;
-
-        // Generate some tiles.
-        for (int x = -5; x < 5; x++)
-            for (int z = -5; z < 5; z++)
-                CreateTile(new Point(x, z));
+        playingFieldGenerator.GenerateField(this, new GameOptions());
     }
 
     public GameObject CreateTile(Point p)

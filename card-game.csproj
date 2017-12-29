@@ -315,6 +315,8 @@
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerData.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerIdNetworkData.cs" />
+    <Compile Include="Assets\Scripts\PlayingField\Generators\PlayingFieldGenerator.cs" />
+    <Compile Include="Assets\Scripts\PlayingField\Generators\SquarePlayingFieldGenerator.cs" />
     <Compile Include="Assets\Scripts\PlayingField\HexagonDirection.cs" />
     <Compile Include="Assets\Scripts\PlayingField\HexagonTile.cs" />
     <Compile Include="Assets\Scripts\PlayingField\PlayingFieldController.cs" />

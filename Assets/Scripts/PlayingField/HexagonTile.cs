@@ -46,7 +46,7 @@ public class HexagonTile : MonoBehaviour
     private void UpdateTooltip()
     {
         string ownerString = owner == null ? "Uncharted area" : "Owner: " + owner.Name;
-        GetComponent<Tooltip>().Text = "<b>Hex Tile</b>\n" + ownerString;
+        GetComponent<Tooltip>().Text = "<b>Hex Tile</b>\n" + ownerString + "\n" + tileX + ", " + TileZ;
     }
 
     public int TileX
