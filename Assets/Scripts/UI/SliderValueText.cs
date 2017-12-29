@@ -12,6 +12,14 @@ public class SliderValueText : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<Slider>().onValueChanged.AddListener(value => ValueText.text = value.ToString());
+        Slider slider = GetComponent<Slider>();
+        // Initialize the text, hook into the value changed event.
+        UpdateText(slider.value);
+        slider.onValueChanged.AddListener(UpdateText);
+    }
+
+    private void UpdateText(float value)
+    {
+        ValueText.text = value.ToString();
     }
 }

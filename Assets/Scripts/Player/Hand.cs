@@ -46,7 +46,7 @@ public class Hand : MonoBehaviour
             selectedCard.GetComponent<Card>().Play(tile);
             UpdateCardPositions(Card.HIGHLIGHT_MOVE_DURATION);
 
-            network.Send("Playing card: " + selectedCard.name);
+            network.SendText("Playing card: " + selectedCard.name);
         }
     }
 

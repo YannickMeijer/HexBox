@@ -29,11 +29,16 @@ public class HostPlayer : NetworkPlayer
         socket.OnData<PlayerData>(data =>
         {
             int newId = Interlocked.Increment(ref currentPlayerId);
-            socket.Send(new PlayerId(newId));
+            socket.Send(new PlayerIdNetworkData(newId));
 
             data.Id = newId;
             players.Add(data);
         });
+    }
+
+    public override void Send(NetworkData data)
+    {
+        socket.Send(data);
     }
 
     /// <summary>
@@ -42,7 +47,7 @@ public class HostPlayer : NetworkPlayer
     private void UpdateGameOptions()
     {
         if (socket != null)
-            socket.Send(gameOptions);
+            Send(gameOptions);
     }
 
     public override void InitializeLobbyGameOptions(GameOptionsUiContainer optionsContainer)

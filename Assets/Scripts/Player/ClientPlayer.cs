@@ -16,11 +16,16 @@ public class ClientPlayer : NetworkPlayer
         socket.OnConnected += () => socket.Send(playerData);
 
         // Hook into the initialization data.
-        socket.OnData<PlayerId>(data =>
+        socket.OnData<PlayerIdNetworkData>(data =>
         {
-            playerData.Id = data.Id;
+            playerData.Id = data.PlayerId;
             Debug.Log("Initialized player, id: " + playerData.Id);
         });
+    }
+
+    public override void Send(NetworkData data)
+    {
+        socket.Send(data);
     }
 
     public override void InitializeLobbyGameOptions(GameOptionsUiContainer optionsContainer)

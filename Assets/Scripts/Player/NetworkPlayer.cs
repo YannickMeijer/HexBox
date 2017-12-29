@@ -16,11 +16,21 @@ public abstract class NetworkPlayer : MonoBehaviour
         socketManager = GameObject.Find("Network").GetComponent<SocketManager>();
     }
 
-    public void Send(string text)
+    public void SendText(string text)
     {
-        socket.Send(new TextNetworkData("From player " + playerData.Id + ":\n" + text));
+        Send(new TextNetworkData("From player " + playerData.Id + ":\n" + text));
     }
 
+    /// <summary>
+    /// Send data to all connected players.
+    /// </summary>
+    /// <param name="data">The data to send.</param>
+    public abstract void Send(NetworkData data);
+
+    /// <summary>
+    /// Initialize the lobby game options.
+    /// </summary>
+    /// <param name="optionsContainer">The container for the ui elements.</param>
     public abstract void InitializeLobbyGameOptions(GameOptionsUiContainer optionsContainer);
 
     public PlayerData PlayerData
