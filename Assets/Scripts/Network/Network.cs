@@ -13,12 +13,12 @@ public class Network : MonoBehaviour
     public void HostLobby()
     {
         gameObject.AddComponent<HostPlayer>();
-        SceneManager.LoadScene("Scenes/Game");
+        SceneManager.LoadScene("Scenes/Lobby");
     }
 
     public void Connect()
     {
         gameObject.AddComponent<ClientPlayer>();
-        SceneManager.LoadScene("Scenes/Game");
+        SceneManager.LoadScene("Scenes/Lobby");
     }
 }
