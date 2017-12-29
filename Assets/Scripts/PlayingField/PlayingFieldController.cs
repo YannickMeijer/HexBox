@@ -6,11 +6,6 @@ public class PlayingFieldController : MonoBehaviour
 {
     public GameObject tilePrefab;
 
-    public HexagonTile selectedTile;
-
-    public delegate void Notifier();
-    public event Notifier Notify;
-
     private GameObject tilesContainer;
 
     // Columns, then rows.
@@ -34,7 +29,6 @@ public class PlayingFieldController : MonoBehaviour
         HexagonTile tile = newTile.GetComponent<HexagonTile>();
         tile.TileX = p.X;
         tile.TileZ = p.Y;
-        tile.controller = this;
 
         tiles[p] = newTile;
         return newTile;
@@ -92,8 +86,4 @@ public class PlayingFieldController : MonoBehaviour
         }
     }
 
-    public void TriggerNotify()
-    {
-        Notify();
-    }
 }

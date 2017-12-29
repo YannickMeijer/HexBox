@@ -9,13 +9,13 @@ public class TurnTimer : MonoBehaviour
     public bool genesisPeriod = true;
 
     //genesisDuration determines how long the gracefulStart lasts.
-    public int turnDuration, unitMoveDuration, genesisDuration;
+    public int turnDuration, unitMoveDuration, genesisDuration, attackDuration;
     
     public List<bool> playersReady;
     bool genesisActive = true, playerTime, unitTime, attackTime;
 
     //The values used internally for counting down. 
-    float internalTimer;
+    public float internalTimer;
     
 
     public delegate void MoveBegin();
@@ -51,26 +51,29 @@ public class TurnTimer : MonoBehaviour
         }
         else
         {
-
             if (playerTime && internalTimer <= 0)
             {
-                moveBegin();
+                if(moveBegin != null)
+                    moveBegin();
                 internalTimer = unitMoveDuration;
                 playerTime = false;
                 unitTime = true;
             }
             else if (unitTime && internalTimer <= 0)
             {
-                attackBegin();
-                internalTimer = turnDuration;
+                if(attackBegin != null)
+                    attackBegin();
+                internalTimer = attackDuration;
                 unitTime = false;
                 attackTime = true;
                 
             }
             else if(attackTime && internalTimer <= 0)
             {
-                turnBegin();
+                if(turnBegin != null)
+                    turnBegin();
                 attackTime = false;
+                internalTimer = turnDuration;
                 playerTime = true;
             }
         }

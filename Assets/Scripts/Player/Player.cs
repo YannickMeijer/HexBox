@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private List<Building> myMana;
     private List<Building> remainingBuildings;
 
+    public MonoBehaviour selected{ get; set; }
+
     private void Start()
     {
         hand = GetComponent<Hand>();
@@ -26,4 +28,19 @@ public class Player : MonoBehaviour
     {
         hand.DrawCard(NormalDeck.GetComponent<Deck>());
     }
+
+    public void ContextAction(HexagonTile tile)
+    {
+        if(selected == null)
+            return;
+        if (selected.GetType() == typeof(Unit))
+        {
+            ((Unit)selected).FindPath(tile);
+            ((Unit)selected).targetHex = tile;
+        }
+       if (selected.GetType() == typeof(UnitCard)|| selected.GetType() == typeof(BuildingCard)|| selected.GetType() == typeof(Card))
+            hand.TileClickedCard(tile);
+    }
+
+    
 }

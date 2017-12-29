@@ -13,13 +13,17 @@ public class PathFinding : MonoBehaviour {
     //Key is the child, value is the parent. Used to find the path from the end to the start
     Dictionary<HexagonTile, HexagonTile> previousNode;
     //contains all nodes already checked.
-    HashSet<HexagonTile> closed;
+    HashSet<HexagonTile> closedOrOpen;
     //A list containing every value of the HexagonDirection Enum for easy iteration
     HexagonDirection[] directions;
 
 	void Start ()
     {
         directions = (HexagonDirection[])Enum.GetValues(typeof(HexagonDirection));
+        open = new List<Node>();
+        controller = GameObject.FindGameObjectWithTag("PlayingField").GetComponent<PlayingFieldController>();
+        previousNode = new Dictionary<HexagonTile, HexagonTile>();
+        closedOrOpen = new HashSet<HexagonTile>();
     }
 
     //Runs A*, parameters speak for themselves. Start should be the point the unit is on.
@@ -30,6 +34,7 @@ public class PathFinding : MonoBehaviour {
         Node startNode = new Node(start, 0, heuristicCost, 0);
 
         open.Add(startNode);
+        closedOrOpen.Add(startNode.thisNode);
 
         bool pathfound = false;
         //Take the current node, find its neighbours and add them to relevant list with costs calculated.
@@ -38,18 +43,19 @@ public class PathFinding : MonoBehaviour {
             Node currentNode = open[open.Count - 1];
             open.RemoveAt(open.Count - 1);
 
-            closed.Add(currentNode.thisNode);
 
             for (int x = 0; x < 6; x++)
             {
                 HexagonTile futureNode = controller.GetNeighbor(currentNode.thisNode, directions[x]);
-                if (closed.Contains(futureNode))
+                if (closedOrOpen.Contains(futureNode))
                     continue;
-
+                else
+                    closedOrOpen.Add(futureNode);
+                Debug.Log(futureNode, currentNode.thisNode);
                 previousNode.Add(futureNode, currentNode.thisNode);
                 heuristicCost = Heuristic(futureNode, goal);
                 int additionalCost = currentNode.additionalCost + AdditionalCostFunction(futureNode);
-                Node addNode = new Node(futureNode, currentNode.fromStart + 1, heuristicCost, 0);
+                Node addNode = new Node(futureNode, currentNode.fromStart + 1, heuristicCost, additionalCost);
                 open.Add(addNode);
                 if (futureNode == goal)
                     pathfound = true;
@@ -110,7 +116,7 @@ public class PathFinding : MonoBehaviour {
     public void resetStructures()
     {
         open.Clear();
-        closed.Clear();
+        closedOrOpen.Clear();
         previousNode.Clear();
     }
 

@@ -7,25 +7,30 @@ public class Unit : MonoBehaviour
     public int health, defense, attack, sight, contactDamage, movementInTiles, unitMoveDuration;
     int actualSpeed, terrainSpdMod;
     public Queue<HexagonTile> movement;
-    bool movementAllowed;
+    public HexagonTile targetHex;
+    public bool movementAllowed;
     int tilesMoved;
-    HexagonTile currentHex, targetHex;
+    public HexagonTile currentHex;
     PathFinding pathFinding;
     TurnTimer timer;
 
-    //Temporary Remove when actions are inside 1 class
-    public Hand hand;
-
+    Player player;
 
     void Start()
     {
         movementAllowed = false;
         tilesMoved = 0;
-        GameObject.FindGameObjectWithTag("TurnTimer").GetComponent<TurnTimer>().moveBegin += StartMovement;
+        timer = GameObject.FindGameObjectWithTag("TurnTimer").GetComponent<TurnTimer>();
+        timer.moveBegin += StartMovement;
+        player = GameObject.Find("LocalPlayer").GetComponent<Player>();
+        GetComponent<MouseHelper>().OnClick += () => player.selected = this;
+        pathFinding = GetComponent<PathFinding>();
+        movement = new Queue<HexagonTile>();
     }
 
     void Update()
     {
+        unitMoveDuration = timer.unitMoveDuration;
         MovementUpdate();
     }
 
@@ -50,6 +55,7 @@ public class Unit : MonoBehaviour
         {
             if (transform.position == currentHex.transform.position)
             {
+                transform.parent = currentHex.transform;
                 pathFinding.FindPath(currentHex, targetHex);
                 currentHex = movement.Dequeue();
                 tilesMoved += 1;
@@ -59,10 +65,15 @@ public class Unit : MonoBehaviour
             movementAllowed = false;
     }
 
-    void StartMovement()
+    public void StartMovement()
     {
         movementAllowed = true;
         tilesMoved = 0;
     }
 
+    public void FindPath(HexagonTile goalTile)
+    {
+        Debug.Log(goalTile);
+        pathFinding.FindPath(currentHex, goalTile);
+    }
 }

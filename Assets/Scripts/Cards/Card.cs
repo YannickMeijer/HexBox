@@ -16,6 +16,7 @@ public class Card : MonoBehaviour
     protected HexagonTile currentHex;
     private MouseHelper mouseHelper;
     private Tooltip tooltip;
+    private Player player;
 
     protected virtual void Start()
     {
@@ -23,12 +24,16 @@ public class Card : MonoBehaviour
         smoothMove = GetComponent<SmoothMove>();
         tooltip = GetComponent<Tooltip>();
 
+        player = GameObject.Find("LocalPlayer").GetComponent<Player>();
         mouseHelper = GetComponent<MouseHelper>();
         mouseHelper.OnClick += () =>
         {
             // Select or deselect the card.
             if (Location == CardLocation.HAND)
+            {
                 playerHand.SelectCard(IsSelected ? null : this);
+                player.selected = this;
+            }
         };
     }
 

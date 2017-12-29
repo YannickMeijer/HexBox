@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HexagonTile : MonoBehaviour
 {
-    public PlayingFieldController controller;
     public float Radius = 0.5f;
     public Card card;
 
@@ -18,6 +17,8 @@ public class HexagonTile : MonoBehaviour
     private Hand playerHand;
     private PlayerData owner;
 
+    private Player player;
+
     private void Start()
     {
         // http://answers.unity3d.com/questions/421509/2d-hexagonal-grid-beginner.html
@@ -28,9 +29,8 @@ public class HexagonTile : MonoBehaviour
 
         UpdateTooltip();
 
-        playerHand = GameObject.Find("LocalPlayer").GetComponent<Hand>();
-        GetComponent<MouseHelper>().OnClick += () => controller.selectedTile = this;
-        GetComponent<MouseHelper>().OnClick += controller.TriggerNotify;
+        player = GameObject.Find("LocalPlayer").GetComponent<Player>();
+        GetComponent<MouseHelper>().OnClick += () => player.ContextAction(this);
     }
 
     private void UpdatePosition()

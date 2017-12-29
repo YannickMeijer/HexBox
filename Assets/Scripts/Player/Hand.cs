@@ -18,11 +18,8 @@ public class Hand : MonoBehaviour
 
     private void Start()
     {
-        controller = GameObject.FindGameObjectWithTag("PlayingFieldController").GetComponent<PlayingFieldController>();
         network = GameObject.Find("Network").GetComponent<NetworkPlayer>();
         SetHandPosition();
-        controller.Notify += () => TileClickedCard(controller.selectedTile);
-        controller.Notify += () => TileClickedUnit(controller.selectedTile);
     }
 
     /// <summary>
