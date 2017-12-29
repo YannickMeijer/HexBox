@@ -7,6 +7,6 @@ using UnityEngine;
 public class GameOptions : NetworkData
 {
     public WorldShape WorldShape = WorldShape.SQUARE;
+    public int WorldSize = 10;
     public int PlayerCount = 2;
-    public int PlayingFieldSize = 10;
 }

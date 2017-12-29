@@ -6,7 +6,7 @@ public class SquarePlayingFieldGenerator : IPlayingFieldGenerator
 {
     public void GenerateField(PlayingFieldController playingField, GameOptions gameOptions)
     {
-        int size = gameOptions.PlayingFieldSize / 2;
+        int size = gameOptions.WorldSize / 2;
 
         for (int x = -size; x <= size; x++)
             for (int z = -size; z <= size; z++)

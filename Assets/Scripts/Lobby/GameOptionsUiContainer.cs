@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class GameOptionsUiContainer : MonoBehaviour
 {
     public Dropdown WorldShapeDropdown;
+    public Slider WorldSizeSlider;
     public Slider PlayerCountSlider;
 
     private void Start()
@@ -33,6 +34,7 @@ public class GameOptionsUiContainer : MonoBehaviour
     public void ApplyOptions(GameOptions options)
     {
         WorldShapeDropdown.value = (int)options.WorldShape;
+        WorldSizeSlider.value = options.WorldSize;
         PlayerCountSlider.value = options.PlayerCount;
     }
 }
