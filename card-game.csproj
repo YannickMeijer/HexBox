@@ -299,7 +299,6 @@
     <Compile Include="Assets\Scripts\Helpers\MouseHelper.cs" />
     <Compile Include="Assets\Scripts\HexagonDirection.cs" />
     <Compile Include="Assets\Scripts\HexagonTile.cs" />
-    <Compile Include="Assets\Scripts\Lobby\GameOptionsWatcher.cs" />
     <Compile Include="Assets\Scripts\Network\ClientSocket.cs" />
     <Compile Include="Assets\Scripts\Network\Network.cs" />
     <Compile Include="Assets\Scripts\Network\NetworkData.cs" />
@@ -318,6 +317,7 @@
     <Compile Include="Assets\Scripts\SmoothMove.cs" />
     <Compile Include="Assets\Scripts\TurnTimer.cs" />
     <Compile Include="Assets\Scripts\UI\ChildSpacer.cs" />
+    <Compile Include="Assets\Scripts\UI\GameOptionsUiContainer.cs" />
     <Compile Include="Assets\Scripts\UI\Tooltip.cs" />
     <Compile Include="Assets\Scripts\Units\DamageType.cs" />
     <Compile Include="Assets\Scripts\Units\PathFinding.cs" />

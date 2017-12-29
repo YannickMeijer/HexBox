@@ -21,7 +21,7 @@ public abstract class NetworkPlayer : MonoBehaviour
         socket.Send(new TextNetworkData("From player " + playerData.Id + ":\n" + text));
     }
 
-    public abstract void InitializeLobbyGameOptions(GameOptionsWatcher optionsWatcher);
+    public abstract void InitializeLobbyGameOptions(GameOptionsUiContainer optionsContainer);
 
     public PlayerData PlayerData
     {

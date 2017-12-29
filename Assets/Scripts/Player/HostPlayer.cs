@@ -45,10 +45,10 @@ public class HostPlayer : NetworkPlayer
             socket.Send(gameOptions);
     }
 
-    public override void InitializeLobbyGameOptions(GameOptionsWatcher optionsWatcher)
+    public override void InitializeLobbyGameOptions(GameOptionsUiContainer optionsContainer)
     {
         // Hook into all events.
-        optionsWatcher.PlayerCountSlider.onValueChanged.AddListener(value =>
+        optionsContainer.PlayerCountSlider.onValueChanged.AddListener(value =>
         {
             gameOptions.PlayerCount = (int)value;
             UpdateGameOptions();

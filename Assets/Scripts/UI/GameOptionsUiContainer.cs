@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOptionsWatcher : MonoBehaviour
+public class GameOptionsUiContainer : MonoBehaviour
 {
     public Slider PlayerCountSlider;
 

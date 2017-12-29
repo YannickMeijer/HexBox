@@ -23,16 +23,16 @@ public class ClientPlayer : NetworkPlayer
         });
     }
 
-    public override void InitializeLobbyGameOptions(GameOptionsWatcher optionsWatcher)
+    public override void InitializeLobbyGameOptions(GameOptionsUiContainer optionsContainer)
     {
         // Disable all interactive elements.
-        optionsWatcher.PlayerCountSlider.interactable = false;
+        optionsContainer.PlayerCountSlider.interactable = false;
 
         // Listen for new game options.
         socket.OnData<GameOptions>(newOptions =>
         {
             gameOptions = newOptions;
-            optionsWatcher.ApplyOptions(newOptions);
+            optionsContainer.ApplyOptions(newOptions);
         });
     }
 }
