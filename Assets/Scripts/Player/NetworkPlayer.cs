@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NetworkPlayer : MonoBehaviour
+public abstract class NetworkPlayer : MonoBehaviour
 {
     protected SocketManager socketManager;
     protected Socket socket;
@@ -20,6 +20,8 @@ public class NetworkPlayer : MonoBehaviour
     {
         socket.Send(new TextNetworkData("From player " + playerData.Id + ":\n" + text));
     }
+
+    public abstract void InitializeLobbyGameOptions(GameOptionsWatcher optionsWatcher);
 
     public PlayerData PlayerData
     {

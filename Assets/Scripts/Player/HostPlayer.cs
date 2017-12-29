@@ -37,13 +37,21 @@ public class HostPlayer : NetworkPlayer
     }
 
     /// <summary>
-    /// Set the game options and send them to the other players.
+    /// Send the game options to the other players.
     /// </summary>
-    /// <param name="options">The new game options.</param>
-    public void SetGameOptions(GameOptions options)
+    private void UpdateGameOptions()
     {
-        gameOptions = options;
         if (socket != null)
-            socket.Send(options);
+            socket.Send(gameOptions);
+    }
+
+    public override void InitializeLobbyGameOptions(GameOptionsWatcher optionsWatcher)
+    {
+        // Hook into all events.
+        optionsWatcher.PlayerCountSlider.onValueChanged.AddListener(value =>
+        {
+            gameOptions.PlayerCount = (int)value;
+            UpdateGameOptions();
+        });
     }
 }

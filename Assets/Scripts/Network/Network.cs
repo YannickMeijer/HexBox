@@ -19,6 +19,6 @@ public class Network : MonoBehaviour
     public void Connect()
     {
         gameObject.AddComponent<ClientPlayer>();
-        SceneManager.LoadScene("Scenes/Game");
+        SceneManager.LoadScene("Scenes/Lobby");
     }
 }
