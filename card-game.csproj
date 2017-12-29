@@ -295,6 +295,8 @@
     <Compile Include="Assets\Scripts\Cards\Loaders\CardInfo.cs" />
     <Compile Include="Assets\Scripts\Cards\Loaders\CardLoader.cs" />
     <Compile Include="Assets\Scripts\Cards\UnitCard.cs" />
+    <Compile Include="Assets\Scripts\Game\GameOptions.cs" />
+    <Compile Include="Assets\Scripts\Game\GameOptionsWatcher.cs" />
     <Compile Include="Assets\Scripts\Helpers\MouseHelper.cs" />
     <Compile Include="Assets\Scripts\HexagonDirection.cs" />
     <Compile Include="Assets\Scripts\HexagonTile.cs" />
@@ -314,9 +316,9 @@
     <Compile Include="Assets\Scripts\PlayingFieldController.cs" />
     <Compile Include="Assets\Scripts\Point.cs" />
     <Compile Include="Assets\Scripts\SmoothMove.cs" />
-    <Compile Include="Assets\Scripts\Tooltip.cs" />
     <Compile Include="Assets\Scripts\TurnTimer.cs" />
     <Compile Include="Assets\Scripts\UI\ChildSpacer.cs" />
+    <Compile Include="Assets\Scripts\UI\Tooltip.cs" />
     <Compile Include="Assets\Scripts\Units\DamageType.cs" />
     <Compile Include="Assets\Scripts\Units\PathFinding.cs" />
     <Compile Include="Assets\Scripts\Units\Unit.cs" />

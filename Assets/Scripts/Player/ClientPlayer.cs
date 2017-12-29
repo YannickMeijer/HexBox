@@ -5,6 +5,9 @@ using UnityEngine.Networking;
 
 public class ClientPlayer : NetworkPlayer
 {
+    public delegate void GameOptionsChangedHandler(GameOptions options);
+    public event GameOptionsChangedHandler GameOptionsChanged;
+
     protected override void Start()
     {
         base.Start();
@@ -20,6 +23,13 @@ public class ClientPlayer : NetworkPlayer
         {
             playerData.Id = data.Id;
             Debug.Log("Initialized player, id: " + playerData.Id);
+        });
+
+        socket.OnData<GameOptions>(newOptions =>
+        {
+            gameOptions = newOptions;
+            if (GameOptionsChanged != null)
+                GameOptionsChanged(newOptions);
         });
     }
 }

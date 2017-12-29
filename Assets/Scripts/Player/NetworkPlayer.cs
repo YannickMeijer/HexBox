@@ -9,6 +9,7 @@ public class NetworkPlayer : MonoBehaviour
 
     protected PlayerData playerData;
     protected List<PlayerData> players = new List<PlayerData>();
+    protected GameOptions gameOptions = new GameOptions();
 
     protected virtual void Start()
     {

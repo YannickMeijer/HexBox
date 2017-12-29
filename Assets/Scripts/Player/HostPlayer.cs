@@ -17,6 +17,7 @@ public class HostPlayer : NetworkPlayer
         // For the host the id is always 0.
         playerData = new PlayerData(0, "Host Player");
 
+        // Create the socket.
         socketManager.CreateHostSocket(QosType.ReliableSequenced, PlayerConnected);
     }
 
@@ -33,5 +34,16 @@ public class HostPlayer : NetworkPlayer
             data.Id = newId;
             players.Add(data);
         });
+    }
+
+    /// <summary>
+    /// Set the game options and send them to the other players.
+    /// </summary>
+    /// <param name="options">The new game options.</param>
+    public void SetGameOptions(GameOptions options)
+    {
+        gameOptions = options;
+        if (socket != null)
+            socket.Send(options);
     }
 }
