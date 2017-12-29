@@ -5,51 +5,75 @@ using System.Linq;
 
 public class TurnTimer : MonoBehaviour
 {
+    //If genesisPeriod is true, the game will not start normal turn progression until all players have ended their genesis turn.
+    public bool genesisPeriod = true;
 
-    public bool gradualMovement = true, gracefulStart = true, unitProgress = false;
-    //If gradualMovement is true, everytime turnDuration runs out the units will move their movespeed. If gracefulStart is true, the game will not start normal turn progression until all are ready or the timer runs out. 
-    public int turnDuration, gracefulDuration;
-    //gracefulDuration determines how long the gracefulStart lasts.
+    //genesisDuration determines how long the gracefulStart lasts.
+    public int turnDuration, unitMoveDuration, genesisDuration;
+    
     public List<bool> playersReady;
-    bool gracefulActive = true;
-    //unitProgress is accessed by units to see if they should move at this point. Units should check if they haven't moved in the last frame.
-    int orderDuration;
-    //orderDuration is used to ensure that all units can see if unitProgress has been changed.
+    bool genesisActive = true, playerTime, unitTime, attackTime;
+
+    //The values used internally for counting down. 
     float internalTimer;
-    //The value that is used internally to count down, and which should be used for time depictions.
+    
+
+    public delegate void MoveBegin();
+    public event MoveBegin moveBegin;
+
+    public delegate void AttackBegin();
+    public event MoveBegin attackBegin;
+
+    public delegate void TurnBegin();
+    public event MoveBegin turnBegin;
 
     void Start()
     {
-        if (gracefulStart)
-            internalTimer = gracefulDuration;
+        if (genesisPeriod)
+            internalTimer = genesisDuration;
+        else
+            internalTimer = turnDuration;
+        playerTime = true;
+        unitTime = false;
     }
 
 
     void Update()
     {
-        while (gracefulStart && gracefulActive) //Lasts until the gracefulStart ends, internaltimer is at least below 0, so units will move immediately.
+        internalTimer -= Time.deltaTime;
+        if (genesisPeriod && genesisActive)
         {
-            internalTimer -= Time.deltaTime;
-            if (playersReady.All(players => players == true) || internalTimer > 0)
+            if (playersReady.All(players => players == true) || internalTimer < 0)
             {
-                gracefulActive = false;
-                internalTimer = 0;
+                genesisActive = false;
+                internalTimer = unitMoveDuration;
+            }
+        }
+        else
+        {
+
+            if (playerTime && internalTimer <= 0)
+            {
+                moveBegin();
+                internalTimer = unitMoveDuration;
+                playerTime = false;
+                unitTime = true;
+            }
+            else if (unitTime && internalTimer <= 0)
+            {
+                attackBegin();
+                internalTimer = turnDuration;
+                unitTime = false;
+                attackTime = true;
+                
+            }
+            else if(attackTime && internalTimer <= 0)
+            {
+                turnBegin();
+                attackTime = false;
+                playerTime = true;
             }
         }
 
-        if (orderDuration > 1)
-        {
-            unitProgress = false;
-            internalTimer = turnDuration;
-            orderDuration = 0;
-        }
-
-        internalTimer -= Time.deltaTime;
-
-        if (internalTimer < 0)
-        {
-            orderDuration += 1;
-            unitProgress = true;
-        }
     }
 }

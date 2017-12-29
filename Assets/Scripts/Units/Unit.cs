@@ -4,39 +4,65 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-	public int Defense = 0;
-	public int MaxHealth = 0;
+    public int health, defense, attack, sight, contactDamage, movementInTiles, unitMoveDuration;
+    int actualSpeed, terrainSpdMod;
+    public Queue<HexagonTile> movement;
+    bool movementAllowed;
+    int tilesMoved;
+    HexagonTile currentHex, targetHex;
+    PathFinding pathFinding;
+    TurnTimer timer;
 
-	private int health;
+    //Temporary Remove when actions are inside 1 class
+    public Hand hand;
 
-	private void Start()
-	{
-		health = MaxHealth;
-	}
 
-	protected virtual void Die()
-	{
-		Destroy(gameObject);
-	}
+    void Start()
+    {
+        movementAllowed = false;
+        tilesMoved = 0;
+        GameObject.FindGameObjectWithTag("TurnTimer").GetComponent<TurnTimer>().moveBegin += StartMovement;
+    }
 
-	public void Damage(int damage, DamageType type)
-	{
-		// Normal damage is reduced by defense.
-		if (type == DamageType.NORMAL)
-			damage -= Defense;
+    void Update()
+    {
+        MovementUpdate();
+    }
 
-		if (damage > 0)
-			Health -= (damage - Defense);
-	}
+    void CombatUpdate()
+    {
 
-	public int Health
-	{
-		get { return health; }
-		set
-		{
-			health = Mathf.Clamp(value, 0, MaxHealth);
-			if (health <= 0)
-				Die();
-		}
-	}
+    }
+
+    void MovementUpdate()
+    {
+        actualSpeed = unitMoveDuration / movementInTiles;
+        if (movementAllowed && currentHex != targetHex)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, currentHex.transform.position, actualSpeed * Time.deltaTime);
+            ExecuteMovement();
+        }
+    }
+
+    void ExecuteMovement()
+    {
+        if (movement.Count != 0 && tilesMoved != movementInTiles)
+        {
+            if (transform.position == currentHex.transform.position)
+            {
+                pathFinding.FindPath(currentHex, targetHex);
+                currentHex = movement.Dequeue();
+                tilesMoved += 1;
+            }
+        }
+        else
+            movementAllowed = false;
+    }
+
+    void StartMovement()
+    {
+        movementAllowed = true;
+        tilesMoved = 0;
+    }
+
 }

@@ -11,9 +11,9 @@ public class PathFinding : MonoBehaviour {
     //all nodes still unchecked for the path
     List<Node> open;
     //Key is the child, value is the parent. Used to find the path from the end to the start
-    Dictionary<Point, Point> previousNode;
+    Dictionary<HexagonTile, HexagonTile> previousNode;
     //contains all nodes already checked.
-    HashSet<Point> closed;
+    HashSet<HexagonTile> closed;
     //A list containing every value of the HexagonDirection Enum for easy iteration
     HexagonDirection[] directions;
 
@@ -23,7 +23,7 @@ public class PathFinding : MonoBehaviour {
     }
 
     //Runs A*, parameters speak for themselves. Start should be the point the unit is on.
-    public List<Point> FindPath(Point start, Point goal)
+    public Queue<HexagonTile> FindPath(HexagonTile start, HexagonTile goal)
     {
         resetStructures();
         int heuristicCost = Heuristic(start, goal);
@@ -42,7 +42,7 @@ public class PathFinding : MonoBehaviour {
 
             for (int x = 0; x < 6; x++)
             {
-                Point futureNode = controller.GetNeighbor(currentNode.thisNode, directions[x]);
+                HexagonTile futureNode = controller.GetNeighbor(currentNode.thisNode, directions[x]);
                 if (closed.Contains(futureNode))
                     continue;
 
@@ -56,37 +56,43 @@ public class PathFinding : MonoBehaviour {
             }
             open.OrderByDescending(a => a.totalCost);
             if (open.Count == 0)
-                return null;
+                return new Queue<HexagonTile>();
         }
 
         return UnwindPath(goal, start);
     }
 
     //Starts from the goal and finds its way back to the start point, then reverses the list so the first move is at 0
-    List<Point> UnwindPath(Point goal, Point start)
+    Queue<HexagonTile> UnwindPath(HexagonTile goal, HexagonTile start)
     {
-        List<Point> returnList = new List<Point>();
-        returnList.Add(goal);
+        Queue<HexagonTile> returnQueue = new Queue<HexagonTile>();
+        List<HexagonTile> temp = new List<HexagonTile>();
+        temp.Add(goal);
 
         bool pathUnwound = false;
         while (!pathUnwound)
         {
-            if (returnList[returnList.Count - 1] == start)
+            if (temp[temp.Count - 1] == start)
             {
                 pathUnwound = true;
                 continue;
             }
-            returnList.Add(previousNode[returnList[returnList.Count - 1]]);
+            temp.Add(previousNode[temp[temp.Count - 1]]);
         }
-        returnList.Reverse();
-        return returnList;
+        
+        while(temp.Count != 0)
+        {
+            returnQueue.Enqueue(temp[temp.Count - 1]);
+            temp.RemoveAt(temp.Count - 1);
+        }
+        return returnQueue;
     }
 
     //The heuristic for hexagons
-    public int Heuristic(Point currentHex, Point goalHex)
+    public int Heuristic(HexagonTile currentHex, HexagonTile goalHex)
     {
-        float difX = Mathf.Abs(goalHex.X - currentHex.X);
-        float difY = Mathf.Abs(goalHex.Y - currentHex.Y);
+        float difX = Mathf.Abs(goalHex.TileX - currentHex.TileX);
+        float difY = Mathf.Abs(goalHex.TileZ - currentHex.TileZ);
 
         if (difX % 2 == 1)
             difY += 0.5f;
@@ -95,7 +101,7 @@ public class PathFinding : MonoBehaviour {
     }
 
     //The cost function for additional stuff, like not wanting to move through lava
-    public int AdditionalCostFunction(Point costIncurred)
+    public int AdditionalCostFunction(HexagonTile costIncurred)
     {
         return 0;
     }
@@ -110,13 +116,13 @@ public class PathFinding : MonoBehaviour {
 
     // A node containing everything needed for pathfinding
     public struct Node {
-        public Point thisNode;
+        public HexagonTile thisNode;
         public int fromStart;
         public int tillFinish;
         public int additionalCost;
         public int totalCost;
 
-        public Node(Point location, int costSoFar, int costTillFinish, int additional)
+        public Node(HexagonTile location, int costSoFar, int costTillFinish, int additional)
         {
             thisNode   = location;
             fromStart  = costSoFar;

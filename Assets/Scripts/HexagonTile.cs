@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HexagonTile : MonoBehaviour
 {
+    public PlayingFieldController controller;
     public float Radius = 0.5f;
     public Card card;
 
@@ -25,7 +26,8 @@ public class HexagonTile : MonoBehaviour
         UpdatePosition();
 
         playerHand = GameObject.Find("LocalPlayer").GetComponent<Hand>();
-        GetComponent<MouseHelper>().OnClick += () => playerHand.TileClicked(this);
+        GetComponent<MouseHelper>().OnClick += () => controller.selectedTile = this;
+        GetComponent<MouseHelper>().OnClick += controller.TriggerNotify;
     }
 
     private void UpdatePosition()

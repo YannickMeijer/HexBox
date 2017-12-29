@@ -9,6 +9,8 @@ public class Hand : MonoBehaviour
     public int StartingHand = 3;
     public int Limit = 10;
 
+    private PlayingFieldController controller;
+
     private NetworkPlayer network;
 
     private float frustumWidth;
@@ -16,8 +18,11 @@ public class Hand : MonoBehaviour
 
     private void Start()
     {
+        controller = GameObject.FindGameObjectWithTag("PlayingFieldController").GetComponent<PlayingFieldController>();
         network = GameObject.Find("Network").GetComponent<NetworkPlayer>();
         SetHandPosition();
+        controller.Notify += () => TileClickedCard(controller.selectedTile);
+        controller.Notify += () => TileClickedUnit(controller.selectedTile);
     }
 
     /// <summary>
@@ -35,7 +40,7 @@ public class Hand : MonoBehaviour
     /// Indicate a tile has been clicked, playing the selected card (if any).
     /// </summary>
     /// <param name="tile">The clicked tile.</param>
-    public void TileClicked(HexagonTile tile)
+    public void TileClickedCard(HexagonTile tile)
     {
         GameObject selectedCard = cards.Find(card => card.GetComponent<Card>().IsSelected);
 
@@ -45,6 +50,15 @@ public class Hand : MonoBehaviour
             cards.Remove(selectedCard);
             selectedCard.GetComponent<Card>().Play(tile);
             UpdateCardPositions(Card.HIGHLIGHT_MOVE_DURATION);
+
+            network.Send("Playing card: " + selectedCard.name);
+        }
+    }
+
+    public void TileClickedUnit(HexagonTile tile)
+    {
+        if (selectedUnit != null)
+        {
 
             network.Send("Playing card: " + selectedCard.name);
         }

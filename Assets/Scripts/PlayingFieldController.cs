@@ -4,87 +4,98 @@ using UnityEngine;
 
 public class PlayingFieldController : MonoBehaviour
 {
-	public GameObject tilePrefab;
+    public GameObject tilePrefab;
 
-	private GameObject tilesContainer;
+    public HexagonTile selectedTile;
 
-	// Columns, then rows.
-	private readonly Dictionary<Point, GameObject> tiles = new Dictionary<Point, GameObject>();
+    public delegate void Notifier();
+    public event Notifier Notify;
 
-	public void Start()
-	{
-		tilesContainer = gameObject.transform.Find("Tiles").gameObject;
+    private GameObject tilesContainer;
 
-		// Generate some tiles.
-		for (int x = -5; x < 5; x++)
-			for (int z = -5; z < 5; z++)
-				CreateTile(new Point(x, z));
-	}
+    // Columns, then rows.
+    private readonly Dictionary<Point, GameObject> tiles = new Dictionary<Point, GameObject>();
 
-	public GameObject CreateTile(Point p)
-	{
-		// Create the gameobject.
-		GameObject newTile = Instantiate(tilePrefab, tilesContainer.transform);
-		newTile.name = p.ToString();
+    public void Start()
+    {
+        tilesContainer = gameObject.transform.Find("Tiles").gameObject;
 
-		// Set the tile position for the script.
-		HexagonTile tile = newTile.GetComponent<HexagonTile>();
-		tile.TileX = p.X;
-		tile.TileZ = p.Y;
+        // Generate some tiles.
+        for (int x = -5; x < 5; x++)
+            for (int z = -5; z < 5; z++)
+                CreateTile(new Point(x, z));
+    }
 
-		tiles[p] = newTile;
-		return newTile;
-	}
+    public GameObject CreateTile(Point p)
+    {
+        // Create the gameobject.
+        GameObject newTile = Instantiate(tilePrefab, tilesContainer.transform);
+        newTile.name = p.ToString();
 
-	public Point GetNeighbor(Point p, HexagonDirection direction)
-	{
-		int dX = 0;
-		int dZ = 0;
+        // Set the tile position for the script.
+        HexagonTile tile = newTile.GetComponent<HexagonTile>();
+        tile.TileX = p.X;
+        tile.TileZ = p.Y;
+        tile.controller = this;
 
-		switch (direction)
-		{
-			case HexagonDirection.TOP:
-				dZ = 1;
-				break;
-			case HexagonDirection.BOTTOM:
-				dZ = -1;
-				break;
-			case HexagonDirection.LEFT_TOP:
-				dX = -1;
-				dZ = p.X % 2 == 0 ? 0 : 1;
-				break;
-			case HexagonDirection.LEFT_BOTTOM:
-				dX = -1;
-				dZ = p.X % 2 == 0 ? -1 : 0;
-				break;
-			case HexagonDirection.RIGHT_TOP:
-				dX = 1;
-				dZ = p.X % 2 == 0 ? 0 : 1;
-				break;
-			case HexagonDirection.RIGHT_BOTTOM:
-				dX = 1;
-				dZ = p.X % 2 == 0 ? -1 : 0;
-				break;
-		}
+        tiles[p] = newTile;
+        return newTile;
+    }
 
-		return new Point(p.X + dX, p.Y + dZ);
-	}
+    public HexagonTile GetNeighbor(HexagonTile p, HexagonDirection direction)
+    {
+        int dX = 0;
+        int dZ = 0;
 
-	public GameObject this[int x, int z]
-	{
-		get
-		{
-			return this[new Point(x, z)];
-		}
-	}
+        switch (direction)
+        {
+            case HexagonDirection.TOP:
+                dZ = 1;
+                break;
+            case HexagonDirection.BOTTOM:
+                dZ = -1;
+                break;
+            case HexagonDirection.LEFT_TOP:
+                dX = -1;
+                dZ = p.TileX % 2 == 0 ? 0 : 1;
+                break;
+            case HexagonDirection.LEFT_BOTTOM:
+                dX = -1;
+                dZ = p.TileX % 2 == 0 ? -1 : 0;
+                break;
+            case HexagonDirection.RIGHT_TOP:
+                dX = 1;
+                dZ = p.TileX % 2 == 0 ? 0 : 1;
+                break;
+            case HexagonDirection.RIGHT_BOTTOM:
+                dX = 1;
+                dZ = p.TileX % 2 == 0 ? -1 : 0;
+                break;
+        }
 
-	public GameObject this[Point p]
-	{
-		get
-		{
-			GameObject value = null;
-			tiles.TryGetValue(p, out value);
-			return value;
-		}
-	}
+        return this[new Point(p.TileX + dX, p.TileZ + dZ)].GetComponent<HexagonTile>();
+    }
+
+    public GameObject this[int x, int z]
+    {
+        get
+        {
+            return this[new Point(x, z)];
+        }
+    }
+
+    public GameObject this[Point p]
+    {
+        get
+        {
+            GameObject value = null;
+            tiles.TryGetValue(p, out value);
+            return value;
+        }
+    }
+
+    public void TriggerNotify()
+    {
+        Notify();
+    }
 }

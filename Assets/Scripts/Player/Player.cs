@@ -8,6 +8,11 @@ public class Player : MonoBehaviour
 
     private Hand hand;
 
+    private List<Unit> myUnits;
+    private List<Building> myHealth;
+    private List<Building> myMana;
+    private List<Building> remainingBuildings;
+
     private void Start()
     {
         hand = GetComponent<Hand>();
