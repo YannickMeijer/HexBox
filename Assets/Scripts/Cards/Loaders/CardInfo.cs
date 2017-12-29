@@ -21,7 +21,6 @@ public abstract class CardInfo
         card.name = name;
 
         Tooltip tooltip = gameObject.GetComponent<Tooltip>();
-        tooltip.TooltipName = name;
-        tooltip.Description = description;
+        tooltip.Text = "<b>" + name + "</b>\n" + description;
     }
 }

@@ -16,6 +16,7 @@ public class HexagonTile : MonoBehaviour
     private float offsetX;
     private float offsetZ;
     private Hand playerHand;
+    private PlayerData owner;
 
     private void Start()
     {
@@ -24,6 +25,8 @@ public class HexagonTile : MonoBehaviour
         offsetX = Radius * 1.5f;
         offsetZ = Radius * Mathf.Sqrt(3);
         UpdatePosition();
+
+        UpdateTooltip();
 
         playerHand = GameObject.Find("LocalPlayer").GetComponent<Hand>();
         GetComponent<MouseHelper>().OnClick += () => controller.selectedTile = this;
@@ -38,6 +41,12 @@ public class HexagonTile : MonoBehaviour
             gameObject.transform.localPosition.y,
             (tileX % 2 == 0 ? tileZ : tileZ + 0.5f) * offsetZ // Z is dependent on the column, odd columns are shifted half a unit up.
         );
+    }
+
+    private void UpdateTooltip()
+    {
+        string ownerString = owner == null ? "Uncharted area" : "Owner: " + owner.Name;
+        GetComponent<Tooltip>().Text = "<b>Hex Tile</b>\n" + ownerString;
     }
 
     public int TileX
@@ -57,6 +66,16 @@ public class HexagonTile : MonoBehaviour
         {
             tileZ = value;
             UpdatePosition();
+        }
+    }
+
+    public PlayerData Owner
+    {
+        get { return owner; }
+        set
+        {
+            owner = value;
+            UpdateTooltip();
         }
     }
 }

@@ -57,11 +57,10 @@ public class Hand : MonoBehaviour
 
     public void TileClickedUnit(HexagonTile tile)
     {
-        if (selectedUnit != null)
+        /*if (selectedUnit != null)
         {
-
             network.Send("Playing card: " + selectedCard.name);
-        }
+        }*/
     }
 
     /// <summary>
