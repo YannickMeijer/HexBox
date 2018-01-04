@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
 
     public void ContextAction(HexagonTile tile)
     {
+        Debug.Log(tile);
         if(selected == null)
             return;
         if (selected.GetType() == typeof(Unit))

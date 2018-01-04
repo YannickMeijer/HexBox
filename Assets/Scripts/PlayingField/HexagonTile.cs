@@ -7,6 +7,9 @@ public class HexagonTile : MonoBehaviour
     public float Radius = 0.5f;
     public Card card;
 
+    public bool blocked;
+    public bool visible;
+
     [SerializeField]
     private int tileX;
     [SerializeField]
@@ -25,6 +28,9 @@ public class HexagonTile : MonoBehaviour
         // Get the offsets.
         offsetX = Radius * 1.5f;
         offsetZ = Radius * Mathf.Sqrt(3);
+
+        blocked = false;
+        visible = true;
         UpdatePosition();
 
         UpdateTooltip();

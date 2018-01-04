@@ -9,8 +9,9 @@ public class Unit : MonoBehaviour
     public Queue<HexagonTile> movement;
     public HexagonTile targetHex;
     public bool movementAllowed;
-    int tilesMoved;
+    public int tilesMoved;
     public HexagonTile currentHex;
+    public int movementCount;
     PathFinding pathFinding;
     TurnTimer timer;
 
@@ -30,6 +31,7 @@ public class Unit : MonoBehaviour
 
     void Update()
     {
+        movementCount = movement.Count;
         unitMoveDuration = timer.unitMoveDuration;
         MovementUpdate();
     }
@@ -42,7 +44,7 @@ public class Unit : MonoBehaviour
     void MovementUpdate()
     {
         actualSpeed = unitMoveDuration / movementInTiles;
-        if (movementAllowed && currentHex != targetHex)
+        if (movementAllowed)
         {
             transform.position = Vector3.MoveTowards(transform.position, currentHex.transform.position, actualSpeed * Time.deltaTime);
             ExecuteMovement();
@@ -56,12 +58,11 @@ public class Unit : MonoBehaviour
             if (transform.position == currentHex.transform.position)
             {
                 transform.parent = currentHex.transform;
-                pathFinding.FindPath(currentHex, targetHex);
                 currentHex = movement.Dequeue();
                 tilesMoved += 1;
             }
         }
-        else
+        else if(transform.position == currentHex.transform.position)
             movementAllowed = false;
     }
 
@@ -74,6 +75,6 @@ public class Unit : MonoBehaviour
     public void FindPath(HexagonTile goalTile)
     {
         Debug.Log(goalTile);
-        pathFinding.FindPath(currentHex, goalTile);
+        movement = pathFinding.FindPath(currentHex, goalTile);
     }
 }

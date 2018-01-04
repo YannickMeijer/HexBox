@@ -65,7 +65,10 @@ public class PlayingFieldController : MonoBehaviour
                 break;
         }
 
-        return this[new Point(p.TileX + dX, p.TileZ + dZ)].GetComponent<HexagonTile>();
+        GameObject temp = this[new Point(p.TileX + dX, p.TileZ + dZ)];
+        if (temp == null)
+            return null;
+        return temp.GetComponent<HexagonTile>();
     }
 
     public GameObject this[int x, int z]
