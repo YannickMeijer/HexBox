@@ -7,6 +7,7 @@ Assets/AssetStoreTools*
 
 # JetBrains Rider
 /.idea/
+/Assets/Plugins/Editor/JetBrains/
 
 # Visual Studio 2015 cache directory
 /.vs/
