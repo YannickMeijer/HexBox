@@ -23,8 +23,6 @@ public class GameOptionsUiContainer : MonoBehaviour
         }
         WorldShapeDropdown.RefreshShownValue();
 
-        // Find the network player.
-        GameObject.Find("Network").GetComponent<NetworkPlayer>().InitializeLobbyGameOptions(this);
     }
 
     /// <summary>

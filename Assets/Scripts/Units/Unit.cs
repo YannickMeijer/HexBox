@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    public int health, defense, attack, sight, contactDamage, movementInTiles, unitMoveDuration;
-    int actualSpeed, terrainSpdMod;
+	public int unitMoveDuration;
+	public int movementInTiles;
+	public int movementCount;
+	public int tilesMoved;
+	public int health;
+	public int sight;
+	int actualSpeed;
+
     public Queue<HexagonTile> movement;
-    public HexagonTile targetHex;
+
+	public HexagonTile currentHex;
+	public HexagonTile targetHex;
+
     public bool movementAllowed;
-    public int tilesMoved;
-    public HexagonTile currentHex;
-    public int movementCount;
+
     PathFinding pathFinding;
     TurnTimer timer;
-
-    Player player;
 
     void Start()
     {
@@ -23,8 +28,6 @@ public class Unit : MonoBehaviour
         tilesMoved = 0;
         timer = GameObject.FindGameObjectWithTag("TurnTimer").GetComponent<TurnTimer>();
         timer.moveBegin += StartMovement;
-        player = GameObject.Find("LocalPlayer").GetComponent<Player>();
-        GetComponent<MouseHelper>().OnClick += () => player.selected = this;
         pathFinding = GetComponent<PathFinding>();
         movement = new Queue<HexagonTile>();
     }
@@ -74,7 +77,6 @@ public class Unit : MonoBehaviour
 
     public void FindPath(HexagonTile goalTile)
     {
-        Debug.Log(goalTile);
         movement = pathFinding.FindPath(currentHex, goalTile);
     }
 }
