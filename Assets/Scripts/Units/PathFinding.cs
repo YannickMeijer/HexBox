@@ -15,11 +15,11 @@ public class PathFinding : MonoBehaviour {
     //contains all nodes already checked.
     HashSet<HexagonTile> checkedNodes;
     //A list containing every value of the HexagonDirection Enum for easy iteration
-    HexagonDirection[] directions;
+    
 
 	void Start ()
     {
-        directions = (HexagonDirection[])Enum.GetValues(typeof(HexagonDirection));
+        
         open = new List<HexNode>();
         controller = GameObject.FindGameObjectWithTag("PlayingField").GetComponent<PlayingFieldController>();
         previousNode = new Dictionary<HexagonTile, HexagonTile>();
@@ -27,38 +27,45 @@ public class PathFinding : MonoBehaviour {
     }
 
     //Runs A*, parameters speak for themselves. Start should be the point the unit is on.
-    public Queue<HexagonTile> FindPath(HexagonTile start, HexagonTile goal)
+    public Queue<HexagonTile> FindPath(HexagonTile start, HexagonTile goal, Unit requester)
     {
         resetStructures();
         int heuristicCost = Heuristic(start, goal);
         HexNode startNode = new HexNode(start, 0, heuristicCost, 0);
 
         open.Add(startNode);
-        checkedNodes.Add(startNode.thisHex);
+        checkedNodes.Add(startNode.currentHex);
 
         bool pathfound = false;
+
         //Take the current node, find its neighbours and add them to relevant list with costs calculated.
         while (!pathfound)
         {
+            List<HexagonTile> neighbours = new List<HexagonTile>();
             HexNode currentNode = open[open.Count - 1];
             open.RemoveAt(open.Count - 1);
+            neighbours = controller.GetAllNeighbours(currentNode.currentHex);
 
             //add the 6 neighbours of the node that's currently being checked.
-            for (int x = 0; x < 6; x++)
+            foreach(HexagonTile futureTile in neighbours)
             {
-                HexagonTile futureNode = controller.GetNeighbor(currentNode.thisHex, directions[x]);
-                if (futureNode.blocked && futureNode.visible)
-                    checkedNodes.Add(futureNode);
-                else if (futureNode == null || checkedNodes.Contains(futureNode))
-                    continue;
-                else
-                    checkedNodes.Add(futureNode);
+                if (requester.InSight(futureTile))
+                {
+                    if (futureTile.blocked)
+                        checkedNodes.Add(futureTile);
+                    else if (futureTile == null || checkedNodes.Contains(futureTile))
+                        continue;
+                    else
+                        checkedNodes.Add(futureTile);
 
-                CreateAndAddHexNode(futureNode, goal, currentNode);
-                if (futureNode == goal)
-                    pathfound = true;
+                    CreateAndAddHexNode(futureTile, goal, currentNode);
+                    if (futureTile == goal)
+                        pathfound = true;
+                }
             }
+
             open = open.OrderByDescending(a => a.totalCost).ToList<HexNode>();
+
             if (open.Count == 0)
                 return new Queue<HexagonTile>();
         }
@@ -124,7 +131,7 @@ public class PathFinding : MonoBehaviour {
 
     void CreateAndAddHexNode(HexagonTile current, HexagonTile goal, HexNode parentNode)
     {
-        previousNode.Add(current, parentNode.thisHex);
+        previousNode.Add(current, parentNode.currentHex);
         int heuristicCost = Heuristic(current, goal);
         int additionalCost = parentNode.additionalCost + AdditionalCostFunction(current);
         HexNode addNode = new HexNode(current, parentNode.fromStart + 1, heuristicCost, additionalCost);
@@ -133,7 +140,7 @@ public class PathFinding : MonoBehaviour {
 
     // A node containing everything needed for pathfinding
     public struct HexNode {
-        public HexagonTile thisHex;
+        public HexagonTile currentHex;
         public int fromStart;
         public int tillFinish;
         public int additionalCost;
@@ -141,7 +148,7 @@ public class PathFinding : MonoBehaviour {
 
         public HexNode(HexagonTile location, int costSoFar, int costTillFinish, int additional)
         {
-            thisHex   = location;
+            currentHex   = location;
             fromStart  = costSoFar;
             tillFinish = costTillFinish;
             additionalCost = additional;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class PlayingFieldController : MonoBehaviour
 
     private GameObject tilesContainer;
 
+    private HexagonDirection[] directions;
+
     // Columns, then rows.
     private readonly Dictionary<Point, GameObject> tiles = new Dictionary<Point, GameObject>();
 
@@ -15,6 +18,7 @@ public class PlayingFieldController : MonoBehaviour
 
     public void Start()
     {
+        directions = (HexagonDirection[])Enum.GetValues(typeof(HexagonDirection));
         tilesContainer = gameObject.transform.Find("Tiles").gameObject;
         playingFieldGenerator.GenerateField(this, new GameOptions());
     }
@@ -69,6 +73,15 @@ public class PlayingFieldController : MonoBehaviour
         if (temp == null)
             return null;
         return temp.GetComponent<HexagonTile>();
+    }
+
+    public List<HexagonTile> GetAllNeighbours(HexagonTile p)
+    {
+        List<HexagonTile> output = new List<HexagonTile>();
+        foreach (HexagonDirection direction in directions)
+            output.Add(GetNeighbor(p, direction));
+
+        return output;
     }
 
     public GameObject this[int x, int z]

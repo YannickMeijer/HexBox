@@ -14,7 +14,6 @@ public class Unit : MonoBehaviour
 
     public Queue<HexagonTile> movement;
 
-	public HexagonTile currentHex;
 	public HexagonTile targetHex;
 
     public bool movementAllowed;
@@ -49,7 +48,7 @@ public class Unit : MonoBehaviour
         actualSpeed = unitMoveDuration / movementInTiles;
         if (movementAllowed)
         {
-            transform.position = Vector3.MoveTowards(transform.position, currentHex.transform.position, actualSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetHex.transform.position, actualSpeed * Time.deltaTime);
             ExecuteMovement();
         }
     }
@@ -58,14 +57,14 @@ public class Unit : MonoBehaviour
     {
         if (movement.Count != 0 && tilesMoved != movementInTiles)
         {
-            if (transform.position == currentHex.transform.position)
+            if (transform.position == targetHex.transform.position)
             {
-                transform.parent = currentHex.transform;
-                currentHex = movement.Dequeue();
+                transform.parent = targetHex.transform;
+                targetHex = movement.Dequeue();
                 tilesMoved += 1;
             }
         }
-        else if(transform.position == currentHex.transform.position)
+        else if(transform.position == targetHex.transform.position)
             movementAllowed = false;
     }
 
@@ -75,8 +74,13 @@ public class Unit : MonoBehaviour
         tilesMoved = 0;
     }
 
+    public bool InSight(HexagonTile p)
+    {
+        return true;
+    }
+
     public void FindPath(HexagonTile goalTile)
     {
-        movement = pathFinding.FindPath(currentHex, goalTile);
+        movement = pathFinding.FindPath(targetHex, goalTile, this);
     }
 }
