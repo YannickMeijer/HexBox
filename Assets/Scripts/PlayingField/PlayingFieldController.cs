@@ -11,6 +11,8 @@ public class PlayingFieldController : MonoBehaviour
 
     private HexagonDirection[] directions;
 
+    private HeatPath HeatSearch;
+
     // Columns, then rows.
     private readonly Dictionary<Point, GameObject> tiles = new Dictionary<Point, GameObject>();
 
@@ -18,6 +20,8 @@ public class PlayingFieldController : MonoBehaviour
 
     public void Start()
     {
+        HeatSearch = new HeatPath();
+        HeatSearch.Controller = this;
         directions = (HexagonDirection[])Enum.GetValues(typeof(HexagonDirection));
         tilesContainer = gameObject.transform.Find("Tiles").gameObject;
         playingFieldGenerator.GenerateField(this, new GameOptions());
@@ -33,6 +37,14 @@ public class PlayingFieldController : MonoBehaviour
         HexagonTile tile = newTile.GetComponent<HexagonTile>();
         tile.TileX = p.X;
         tile.TileZ = p.Y;
+
+        HexTemperature hexTemp = newTile.GetComponent<HexTemperature>();
+
+        hexTemp.Pathing = HeatSearch;
+        hexTemp.Field = this;
+        hexTemp.MyHex = tile;
+
+        tile.MyTemp = hexTemp;
 
         tiles[p] = newTile;
         return newTile;

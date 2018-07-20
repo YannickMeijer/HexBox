@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFinding : MonoBehaviour {
+public class PathFinding{
 
     PlayingFieldController controller;
 
@@ -49,14 +49,16 @@ public class PathFinding : MonoBehaviour {
             //add the 6 neighbours of the node that's currently being checked.
             foreach(HexagonTile futureTile in neighbours)
             {
-                if (requester.InSight(futureTile))
+                if (requester.InSight(futureTile) )
                 {
-                    if (futureTile.blocked)
-                        checkedNodes.Add(futureTile);
-                    else if (futureTile == null || checkedNodes.Contains(futureTile))
+                    if (futureTile == null || checkedNodes.Contains(futureTile))
                         continue;
                     else
+                    {
                         checkedNodes.Add(futureTile);
+                        if (futureTile.blocked)
+                            continue;
+                    }
 
                     CreateAndAddHexNode(futureTile, goal, currentNode);
                     if (futureTile == goal)

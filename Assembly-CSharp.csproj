@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Environment\HexTemperature.cs" />
     <Compile Include="Assets\Scripts\Game\GameOptions.cs" />
     <Compile Include="Assets\Scripts\Helpers\MouseHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\SmoothMove.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Assets\Scripts\UI\SliderValueText.cs" />
     <Compile Include="Assets\Scripts\UI\Tooltip.cs" />
     <Compile Include="Assets\Scripts\Units\DamageType.cs" />
+    <Compile Include="Assets\Scripts\Units\HeatPath.cs" />
     <Compile Include="Assets\Scripts\Units\PathFinding.cs" />
     <Compile Include="Assets\Scripts\Units\Unit.cs" />
     <Compile Include="Assets\Scripts\Util.cs" />

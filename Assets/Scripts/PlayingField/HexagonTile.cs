@@ -17,12 +17,17 @@ public class HexagonTile : MonoBehaviour
     private float offsetX;
     private float offsetZ;
 
+    public HexTemperature MyTemp { get; set; }
+
     private void Start()
     {
         // http://answers.unity3d.com/questions/421509/2d-hexagonal-grid-beginner.html
         // Get the offsets.
         offsetX = Radius * 1.5f;
         offsetZ = Radius * Mathf.Sqrt(3);
+
+        MyTemp = gameObject.GetComponent<HexTemperature>();
+        MyTemp.MyHex = this;
 
         blocked = false;
         visible = true;
@@ -38,7 +43,7 @@ public class HexagonTile : MonoBehaviour
             (tileX % 2 == 0 ? tileZ : tileZ + 0.5f) * offsetZ // Z is dependent on the column, odd columns are shifted half a unit up.
         );
     }
-		
+
     public int TileX
     {
         get { return tileX; }
@@ -58,5 +63,4 @@ public class HexagonTile : MonoBehaviour
             UpdatePosition();
         }
     }
-		
 }

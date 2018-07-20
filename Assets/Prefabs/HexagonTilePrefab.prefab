@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 64418512528930126}
   - component: {fileID: 114868817341768196}
   - component: {fileID: 114868099381429158}
+  - component: {fileID: 114112100749636400}
   m_Layer: 0
   m_Name: HexagonTilePrefab
   m_TagString: Untagged
@@ -59,6 +60,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 2cab02cb78879eb47ac367d7d65c84cf, type: 2}
   m_StaticBatchInfo:
@@ -118,6 +120,21 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114112100749636400
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1349213262592420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db027ec410d07546a54e2f0ec8e5d00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugCheck: 0
+  DebugRange: 0
+  DebugHeat: 0
 --- !u!114 &114389033615424126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,9 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc71211fbcce174cb938c95f65f1b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
   Radius: 0.5
-  card: {fileID: 0}
+  blocked: 0
+  visible: 0
   tileX: 0
   tileZ: 0
 --- !u!114 &114868099381429158
@@ -223,5 +240,4 @@ MonoBehaviour:
     m_FixedHeight: 0
     m_StretchWidth: 1
     m_StretchHeight: 0
-  tooltipName: Normal tile
-  description: 
+  text: 
