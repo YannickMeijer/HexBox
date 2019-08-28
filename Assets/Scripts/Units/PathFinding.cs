@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PathFinding{
-
+/*
     PlayingFieldController controller;
 
     //all nodes still unchecked for the path
@@ -158,4 +158,5 @@ public class PathFinding{
         }
             
     }
+    */
 }
