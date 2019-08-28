@@ -6,9 +6,6 @@ public class HexagonTile : MonoBehaviour
 {
     public float Radius = 0.5f;
 
-    public bool blocked;
-    public bool visible;
-
     [SerializeField]
     private int tileX;
     [SerializeField]
@@ -17,8 +14,6 @@ public class HexagonTile : MonoBehaviour
     private float offsetX;
     private float offsetZ;
 
-    public HexTemperature MyTemp { get; set; }
-
     private void Start()
     {
         // http://answers.unity3d.com/questions/421509/2d-hexagonal-grid-beginner.html
@@ -26,11 +21,6 @@ public class HexagonTile : MonoBehaviour
         offsetX = Radius * 1.5f;
         offsetZ = Radius * Mathf.Sqrt(3);
 
-        MyTemp = gameObject.GetComponent<HexTemperature>();
-        MyTemp.MyHex = this;
-
-        blocked = false;
-        visible = true;
         UpdatePosition();
     }
 

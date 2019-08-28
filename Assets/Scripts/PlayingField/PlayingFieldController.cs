@@ -11,17 +11,10 @@ public class PlayingFieldController : MonoBehaviour
 
     private HexagonDirection[] directions;
 
-    private HeatPath HeatSearch;
-
-    // Columns, then rows.
-    private readonly Dictionary<Point, GameObject> tiles = new Dictionary<Point, GameObject>();
-
     private IPlayingFieldGenerator playingFieldGenerator = new SquarePlayingFieldGenerator();
 
     public void Start()
     {
-        HeatSearch = new HeatPath();
-        HeatSearch.Controller = this;
         directions = (HexagonDirection[])Enum.GetValues(typeof(HexagonDirection));
         tilesContainer = gameObject.transform.Find("Tiles").gameObject;
         playingFieldGenerator.GenerateField(this, new GameOptions());
@@ -38,19 +31,11 @@ public class PlayingFieldController : MonoBehaviour
         tile.TileX = p.X;
         tile.TileZ = p.Y;
 
-        HexTemperature hexTemp = newTile.GetComponent<HexTemperature>();
-
-        hexTemp.Pathing = HeatSearch;
-        hexTemp.Field = this;
-        hexTemp.MyHex = tile;
-
-        tile.MyTemp = hexTemp;
-
-        tiles[p] = newTile;
+        PlayingField.tiles[p] = newTile;
         return newTile;
     }
 
-    public HexagonTile GetNeighbor(HexagonTile p, HexagonDirection direction)
+    public Point GetNeighbourPoint(Point p, HexagonDirection direction)
     {
         int dX = 0;
         int dZ = 0;
@@ -65,23 +50,28 @@ public class PlayingFieldController : MonoBehaviour
                 break;
             case HexagonDirection.LEFT_TOP:
                 dX = -1;
-                dZ = p.TileX % 2 == 0 ? 0 : 1;
+                dZ = p.X % 2 == 0 ? 0 : 1;
                 break;
             case HexagonDirection.LEFT_BOTTOM:
                 dX = -1;
-                dZ = p.TileX % 2 == 0 ? -1 : 0;
+                dZ = p.X % 2 == 0 ? -1 : 0;
                 break;
             case HexagonDirection.RIGHT_TOP:
                 dX = 1;
-                dZ = p.TileX % 2 == 0 ? 0 : 1;
+                dZ = p.X % 2 == 0 ? 0 : 1;
                 break;
             case HexagonDirection.RIGHT_BOTTOM:
                 dX = 1;
-                dZ = p.TileX % 2 == 0 ? -1 : 0;
+                dZ = p.X % 2 == 0 ? -1 : 0;
                 break;
         }
+        return new Point(dX, dZ);
+    }
 
-        GameObject temp = this[new Point(p.TileX + dX, p.TileZ + dZ)];
+    public HexagonTile GetNeighbor(HexagonTile p, HexagonDirection direction)
+    {
+        var neighbourPoint = GetNeighbourPoint(new Point(p.TileX, p.TileZ), direction);
+        GameObject temp = PlayingField.tiles[neighbourPoint];
         if (temp == null)
             return null;
         return temp.GetComponent<HexagonTile>();
@@ -95,23 +85,4 @@ public class PlayingFieldController : MonoBehaviour
 
         return output;
     }
-
-    public GameObject this[int x, int z]
-    {
-        get
-        {
-            return this[new Point(x, z)];
-        }
-    }
-
-    public GameObject this[Point p]
-    {
-        get
-        {
-            GameObject value = null;
-            tiles.TryGetValue(p, out value);
-            return value;
-        }
-    }
-
 }
